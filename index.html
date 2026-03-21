@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Science Teacher Pro · Exact Text + Large Images PowerPoint Creator</title>
+    <title>Science PPT Creator · Complete Control Edition</title>
     <style>
         * {
             margin: 0;
@@ -12,247 +12,259 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            padding: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            background: white;
-            border-radius: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3);
-            overflow: hidden;
         }
 
+        /* Header */
         .header {
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 100%);
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
-            padding: 2rem;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
             text-align: center;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 1.1rem; }
 
-        .header p {
-            opacity: 0.95;
-            font-size: 1.1rem;
-        }
-
-        .main-content {
+        /* Layout */
+        .workspace {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding: 2rem;
+            gap: 25px;
         }
 
-        .input-section {
-            background: #f8fafc;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .input-section h2 {
-            color: #1e3c72;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .slide-input {
-            margin-bottom: 1rem;
+        /* Editor Panel */
+        .editor-panel {
             background: white;
-            border-radius: 0.75rem;
-            border: 2px solid #e2e8f0;
-            transition: all 0.2s;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .slide-input:hover {
-            border-color: #2a5298;
-        }
-
-        .slide-header {
-            background: #f1f5f9;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem 0.75rem 0 0;
-            font-weight: 600;
+        .editor-panel h2 {
             color: #1e3c72;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .slide-number {
-            background: #2a5298;
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
+        .slides-list {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 10px;
         }
 
-        .remove-slide {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 0.2rem 0.6rem;
-            border-radius: 50px;
+        .slide-editor {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .slide-editor:hover {
+            border-color: #2a5298;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .slide-editor-header {
+            background: #eef2ff;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .remove-slide:hover {
-            background: #dc2626;
-        }
-
-        .slide-content {
-            padding: 1rem;
-        }
-
-        .slide-title-input, .slide-text-input {
-            width: 100%;
-            padding: 0.6rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.5rem;
-            font-family: inherit;
-            margin-bottom: 0.75rem;
+            font-weight: 600;
         }
 
         .slide-title-input {
+            font-size: 16px;
             font-weight: 600;
-            font-size: 1rem;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            margin: 12px;
+            width: calc(100% - 24px);
+            font-family: inherit;
         }
 
-        .slide-text-input {
-            min-height: 120px;
+        .slide-content-input {
+            font-size: 14px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            margin: 0 12px 12px 12px;
+            width: calc(100% - 24px);
+            min-height: 150px;
+            font-family: inherit;
+            line-height: 1.5;
             resize: vertical;
-            font-size: 0.9rem;
-            line-height: 1.4;
         }
 
-        .controls {
-            margin-top: 1.5rem;
+        .image-controls {
+            padding: 0 12px 12px 12px;
             display: flex;
-            gap: 1rem;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .image-url-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        .search-image-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .remove-slide-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .preview-panel h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .slide-preview {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .preview-header {
+            background: #f1f5f9;
+            padding: 10px 16px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .preview-content {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .preview-text {
+            flex: 1;
+        }
+
+        .preview-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 12px;
+        }
+
+        .preview-body {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #334155;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .preview-image {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #f1f5f9;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 0.7rem 1.2rem;
+            padding: 12px 24px;
             border: none;
-            border-radius: 0.75rem;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            font-family: inherit;
+            font-size: 14px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
             flex: 1;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
+            box-shadow: 0 6px 20px rgba(30,60,114,0.3);
         }
 
         .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-success {
             background: #10b981;
             color: white;
         }
 
-        .btn-secondary:hover {
-            background: #059669;
-        }
-
-        .preview-section {
-            background: #f8fafc;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .preview-section h2 {
-            color: #1e3c72;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .slide-card {
-            background: white;
-            border-radius: 0.75rem;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .slide-card-header {
-            background: #1e3c72;
-            color: white;
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .slide-card-body {
-            padding: 1rem;
-        }
-
-        .slide-card-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #1e3c72;
-            margin-bottom: 0.5rem;
-        }
-
-        .slide-card-text {
-            font-size: 0.85rem;
-            color: #475569;
-            line-height: 1.4;
-            margin-bottom: 0.75rem;
-            white-space: pre-wrap;
-        }
-
-        .slide-card-image {
-            width: 100%;
-            height: 140px;
-            background: #e2e8f0;
-            border-radius: 0.5rem;
-            object-fit: cover;
-        }
-
         .status {
-            margin: 0 2rem 2rem 2rem;
-            padding: 1rem;
-            border-radius: 0.75rem;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
             text-align: center;
             font-weight: 500;
         }
 
-        .status-info {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+        .status-success { background: #d1fae5; color: #065f46; }
+        .status-error { background: #fee2e2; color: #991b1b; }
+        .status-info { background: #dbeafe; color: #1e40af; }
 
         .loading {
             display: inline-block;
@@ -261,19 +273,23 @@
             border: 3px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.6s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 768px) {
-            .main-content {
+        @media (max-width: 900px) {
+            .workspace {
                 grid-template-columns: 1fr;
             }
-            body {
-                padding: 1rem;
+            .preview-content {
+                flex-direction: column;
+            }
+            .preview-image {
+                width: 100%;
+                height: 180px;
             }
         }
     </style>
@@ -281,116 +297,118 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🔬 Science Teacher Pro</h1>
-        <p>Your exact text + Large images on every slide | Perfect for classroom presentations</p>
+        <h1>🔬 Science PPT Creator</h1>
+        <p>Your text, your images, your way. Full control over every slide.</p>
     </div>
 
-    <div class="main-content">
-        <div class="input-section">
-            <h2>📝 Create Your Science Slides</h2>
-            <div id="slidesContainer"></div>
+    <div class="workspace">
+        <!-- Left: Editor -->
+        <div class="editor-panel">
+            <h2>
+                📝 Slide Editor
+                <button class="btn-secondary" id="addSlideBtn" style="padding: 6px 12px;">+ Add Slide</button>
+            </h2>
+            <div id="slidesEditor" class="slides-list"></div>
             
-            <div class="controls">
-                <button class="btn btn-secondary" id="addSlideBtn">➕ Add New Slide</button>
-                <button class="btn btn-primary" id="generateBtn">🎓 Generate PowerPoint (Large Images)</button>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="generateBtn">📥 Generate PowerPoint File</button>
+                <button class="btn btn-success" id="loadExampleBtn">📚 Load Example Lessons</button>
             </div>
-            <div class="controls" style="margin-top: 0.5rem;">
-                <button class="btn" id="loadExampleBtn" style="background: #3b82f6; color: white;">📚 Load Science Example</button>
-            </div>
+            <div id="status" class="status status-info">✅ Ready. Create your slides with custom text and images.</div>
         </div>
 
-        <div class="preview-section">
-            <h2>🔍 Preview (Your Exact Text + Images)</h2>
-            <div id="previewContainer">
-                <p style="color: #64748b; text-align: center; padding: 2rem;">
-                    Add slides and your exact text will appear here
-                </p>
-            </div>
+        <!-- Right: Preview -->
+        <div class="preview-panel">
+            <h2>👁️ Live Preview</h2>
+            <div id="previewArea"></div>
         </div>
-    </div>
-
-    <div id="statusMessage" class="status status-info">
-        💡 Enter your exact text for each slide. The PowerPoint will preserve your formatting with large, prominent images!
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 <script>
     let slides = [];
-    let slideIdCounter = 0;
+    let nextId = 1;
 
-    // High-quality science image database (large, clear images)
-    const scienceImages = {
-        'cell': 'https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'dna': 'https://images.pexels.com/photos/2280545/pexels-photo-2280545.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'microscope': 'https://images.pexels.com/photos/5598312/pexels-photo-5598312.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'photosynthesis': 'https://images.pexels.com/photos/247852/pexels-photo-247852.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'human body': 'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'bacteria': 'https://images.pexels.com/photos/158463/pexels-photo-158463.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'chemical': 'https://images.pexels.com/photos/3793517/pexels-photo-3793517.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'molecule': 'https://images.pexels.com/photos/407176/pexels-photo-407176.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'atom': 'https://images.pexels.com/photos/258238/pexels-photo-258238.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'lab': 'https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'physics': 'https://images.pexels.com/photos/129703/pexels-photo-129703.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'energy': 'https://images.pexels.com/photos/414988/pexels-photo-414988.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'magnet': 'https://images.pexels.com/photos/355963/pexels-photo-355963.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'gravity': 'https://images.pexels.com/photos/220201/pexels-photo-220201.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'space': 'https://images.pexels.com/photos/2156/sky-earth-space-working.jpg?auto=compress&cs=tinysrgb&w=1200',
-        'science': 'https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'butterfly': 'https://images.pexels.com/photos/92425/pexels-photo-92425.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'frog': 'https://images.pexels.com/photos/290143/pexels-photo-290143.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        'ecosystem': 'https://images.pexels.com/photos/1191403/pexels-photo-1191403.jpeg?auto=compress&cs=tinysrgb&w=1200'
+    // High-quality educational image database (free, reliable)
+    const imageDatabase = {
+        // Biology
+        'cell': 'https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&w=800',
+        'dna': 'https://images.pexels.com/photos/2280545/pexels-photo-2280545.jpeg?auto=compress&w=800',
+        'butterfly': 'https://images.pexels.com/photos/92425/pexels-photo-92425.jpeg?auto=compress&w=800',
+        'frog': 'https://images.pexels.com/photos/290143/pexels-photo-290143.jpeg?auto=compress&w=800',
+        'ecosystem': 'https://images.pexels.com/photos/1191403/pexels-photo-1191403.jpeg?auto=compress&w=800',
+        'photosynthesis': 'https://images.pexels.com/photos/247852/pexels-photo-247852.jpeg?auto=compress&w=800',
+        'microscope': 'https://images.pexels.com/photos/5598312/pexels-photo-5598312.jpeg?auto=compress&w=800',
+        
+        // Chemistry
+        'chemical': 'https://images.pexels.com/photos/3793517/pexels-photo-3793517.jpeg?auto=compress&w=800',
+        'molecule': 'https://images.pexels.com/photos/407176/pexels-photo-407176.jpeg?auto=compress&w=800',
+        'lab': 'https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&w=800',
+        
+        // Physics
+        'physics': 'https://images.pexels.com/photos/129703/pexels-photo-129703.jpeg?auto=compress&w=800',
+        'energy': 'https://images.pexels.com/photos/414988/pexels-photo-414988.jpeg?auto=compress&w=800',
+        'space': 'https://images.pexels.com/photos/2156/sky-earth-space-working.jpg?auto=compress&w=800',
+        
+        // Default
+        'science': 'https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg?auto=compress&w=800'
     };
 
-    function getScienceImage(title, content) {
+    function suggestImage(title, content) {
         const text = (title + ' ' + content).toLowerCase();
         
-        if (text.includes('cell') || text.includes('biology')) return scienceImages.cell;
-        if (text.includes('dna') || text.includes('gene')) return scienceImages.dna;
-        if (text.includes('microscope')) return scienceImages.microscope;
-        if (text.includes('photosynthesis') || text.includes('plant')) return scienceImages.photosynthesis;
-        if (text.includes('human') || text.includes('body') || text.includes('heart')) return scienceImages['human body'];
-        if (text.includes('bacteria') || text.includes('virus')) return scienceImages.bacteria;
-        if (text.includes('chemical') || text.includes('reaction')) return scienceImages.chemical;
-        if (text.includes('molecule')) return scienceImages.molecule;
-        if (text.includes('atom')) return scienceImages.atom;
-        if (text.includes('lab') || text.includes('experiment')) return scienceImages.lab;
-        if (text.includes('physics') || text.includes('quantum')) return scienceImages.physics;
-        if (text.includes('energy')) return scienceImages.energy;
-        if (text.includes('magnet')) return scienceImages.magnet;
-        if (text.includes('gravity')) return scienceImages.gravity;
-        if (text.includes('space') || text.includes('planet')) return scienceImages.space;
-        if (text.includes('butterfly')) return scienceImages.butterfly;
-        if (text.includes('frog')) return scienceImages.frog;
-        if (text.includes('ecosystem') || text.includes('environment')) return scienceImages.ecosystem;
+        if (text.includes('butterfly')) return imageDatabase.butterfly;
+        if (text.includes('frog')) return imageDatabase.frog;
+        if (text.includes('cell')) return imageDatabase.cell;
+        if (text.includes('dna')) return imageDatabase.dna;
+        if (text.includes('ecosystem')) return imageDatabase.ecosystem;
+        if (text.includes('photosynthesis')) return imageDatabase.photosynthesis;
+        if (text.includes('microscope')) return imageDatabase.microscope;
+        if (text.includes('chemical') || text.includes('molecule')) return imageDatabase.chemical;
+        if (text.includes('physics')) return imageDatabase.physics;
+        if (text.includes('energy')) return imageDatabase.energy;
+        if (text.includes('space')) return imageDatabase.space;
         
-        return scienceImages.science;
+        return imageDatabase.science;
     }
 
-    function renderSlideEditor() {
-        const container = document.getElementById('slidesContainer');
+    function renderEditor() {
+        const container = document.getElementById('slidesEditor');
         if (slides.length === 0) {
-            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">Click "Add New Slide" to start creating your science presentation</p>';
+            container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">Click "Add Slide" to start creating your presentation</div>';
             return;
         }
         
         let html = '';
         slides.forEach((slide, index) => {
             html += `
-                <div class="slide-input" data-id="${slide.id}">
-                    <div class="slide-header">
-                        <span class="slide-number">Slide ${index + 1}</span>
-                        <button class="remove-slide" onclick="removeSlide(${slide.id})">🗑️ Remove</button>
+                <div class="slide-editor">
+                    <div class="slide-editor-header">
+                        <span>📄 Slide ${index + 1}</span>
+                        <button class="remove-slide-btn" onclick="removeSlide(${slide.id})">Delete</button>
                     </div>
-                    <div class="slide-content">
-                        <input type="text" class="slide-title-input" placeholder="Slide Title" value="${escapeHtml(slide.title)}" onchange="updateSlide(${slide.id}, 'title', this.value)">
-                        <textarea class="slide-text-input" placeholder="Enter your exact text here. Everything you type will appear exactly in the PowerPoint slide..." onchange="updateSlide(${slide.id}, 'content', this.value)">${escapeHtml(slide.content)}</textarea>
+                    <input type="text" class="slide-title-input" placeholder="Slide Title" value="${escapeHtml(slide.title)}" onchange="updateSlide(${slide.id}, 'title', this.value)">
+                    <textarea class="slide-content-input" placeholder="Enter your exact text here. Supports bullet points, line breaks, and formatting..." onchange="updateSlide(${slide.id}, 'content', this.value)">${escapeHtml(slide.content)}</textarea>
+                    <div class="image-controls">
+                        <input type="text" class="image-url-input" placeholder="Image URL (or leave empty for auto-suggest)" value="${escapeHtml(slide.imageUrl || '')}" onchange="updateSlide(${slide.id}, 'imageUrl', this.value)">
+                        <button class="search-image-btn" onclick="suggestImageForSlide(${slide.id})">🔍 Suggest Image</button>
                     </div>
                 </div>
             `;
         });
         container.innerHTML = html;
         renderPreview();
+    }
+
+    function suggestImageForSlide(slideId) {
+        const slide = slides.find(s => s.id === slideId);
+        if (slide) {
+            const suggested = suggestImage(slide.title, slide.content);
+            slide.imageUrl = suggested;
+            renderEditor();
+            updateStatus('Image suggested based on your content!', 'info');
+        }
     }
 
     function updateSlide(id, field, value) {
@@ -403,27 +421,29 @@
 
     function removeSlide(id) {
         slides = slides.filter(s => s.id !== id);
-        renderSlideEditor();
+        renderEditor();
         updateStatus(`Slide removed. ${slides.length} slide(s) remaining.`, 'info');
     }
 
     function renderPreview() {
-        const container = document.getElementById('previewContainer');
+        const container = document.getElementById('previewArea');
         if (slides.length === 0) {
-            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">No slides to preview. Add slides to see your exact text here.</p>';
+            container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">Add slides to see live preview</div>';
             return;
         }
         
         let html = '';
         slides.forEach((slide, index) => {
-            const imageUrl = getScienceImage(slide.title, slide.content);
+            const imageUrl = slide.imageUrl || suggestImage(slide.title, slide.content);
             html += `
-                <div class="slide-card">
-                    <div class="slide-card-header">Slide ${index + 1}</div>
-                    <div class="slide-card-body">
-                        <div class="slide-card-title">${escapeHtml(slide.title || 'Untitled Slide')}</div>
-                        <div class="slide-card-text" style="white-space: pre-wrap;">${escapeHtml(slide.content || 'No content yet')}</div>
-                        <img src="${imageUrl}" class="slide-card-image" alt="Science image" onerror="this.src='https://picsum.photos/id/20/800/450'">
+                <div class="slide-preview">
+                    <div class="preview-header">Slide ${index + 1}</div>
+                    <div class="preview-content">
+                        <div class="preview-text">
+                            <div class="preview-title">${escapeHtml(slide.title || 'Untitled')}</div>
+                            <div class="preview-body">${escapeHtml(slide.content || 'No content yet').replace(/\n/g, '<br>')}</div>
+                        </div>
+                        <img src="${imageUrl}" class="preview-image" onerror="this.src='https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg?auto=compress&w=800'">
                     </div>
                 </div>
             `;
@@ -432,19 +452,20 @@
     }
 
     function escapeHtml(text) {
+        if (!text) return '';
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 
     function updateStatus(message, type) {
-        const statusDiv = document.getElementById('statusMessage');
+        const statusDiv = document.getElementById('status');
         statusDiv.textContent = message;
         statusDiv.className = `status status-${type}`;
         setTimeout(() => {
-            if (document.getElementById('statusMessage').textContent === message) {
+            if (document.getElementById('status').textContent === message) {
                 statusDiv.className = 'status status-info';
-                statusDiv.textContent = '💡 Enter your exact text for each slide. The PowerPoint will preserve your formatting with large, prominent images!';
+                statusDiv.textContent = '✅ Ready. Create your slides with custom text and images.';
             }
         }, 4000);
     }
@@ -455,10 +476,10 @@
             return;
         }
         
-        const generateBtn = document.getElementById('generateBtn');
-        const originalText = generateBtn.innerHTML;
-        generateBtn.innerHTML = '<span class="loading"></span> Creating PowerPoint with Large Images...';
-        generateBtn.disabled = true;
+        const btn = document.getElementById('generateBtn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="loading"></span> Creating PowerPoint...';
+        btn.disabled = true;
         
         try {
             const PptxGenJS = window.PptxGenJS;
@@ -467,32 +488,31 @@
             pptx.layout = 'LAYOUT_WIDE';
             pptx.author = 'Science Teacher';
             pptx.title = 'Science Presentation';
-            pptx.company = 'Science Teacher Pro';
             
             for (let i = 0; i < slides.length; i++) {
                 const slide = slides[i];
-                const imageUrl = getScienceImage(slide.title, slide.content);
+                const imageUrl = slide.imageUrl || suggestImage(slide.title, slide.content);
                 const pptSlide = pptx.addSlide();
                 
-                // Clean white background for better readability
+                // White background
                 pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
                     x: 0, y: 0, w: '100%', h: '100%',
                     fill: { type: 'solid', color: 'FFFFFF' }
                 });
                 
-                // Add a subtle header bar
+                // Blue top bar
                 pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                    x: 0, y: 0, w: '100%', h: 0.6,
+                    x: 0, y: 0, w: '100%', h: 0.7,
                     fill: { type: 'solid', color: '2A5298' }
                 });
                 
-                // Add title with large font
+                // Title
                 pptSlide.addText(slide.title || 'Science Lesson', {
                     x: 0.5, y: 0.2, w: 9, h: 0.8,
-                    fontSize: 36, bold: true, color: '2A5298'
+                    fontSize: 32, bold: true, color: '2A5298'
                 });
                 
-                // Add LARGE IMAGE (taking up significant space)
+                // Add image (left side for better text flow)
                 try {
                     const response = await fetch(imageUrl);
                     if (response.ok) {
@@ -503,136 +523,101 @@
                             reader.readAsDataURL(blob);
                         });
                         
-                        // LARGE IMAGE - takes right side prominently
                         pptSlide.addImage({
                             data: base64,
-                            x: 5.5, y: 1.2, w: 4.2, h: 3.5,
-                            sizing: { type: 'contain', w: 4.2, h: 3.5 }
+                            x: 0.5, y: 1.2, w: 3.8, h: 3,
+                            sizing: { type: 'contain', w: 3.8, h: 3 }
                         });
+                        
+                        // Text on right side when image is present
+                        const lines = (slide.content || '').split('\n');
+                        let yPos = 1.2;
+                        for (let line of lines) {
+                            if (line.trim()) {
+                                pptSlide.addText(line.trim(), {
+                                    x: 4.5, y: yPos, w: 5, h: 0.5,
+                                    fontSize: 14, color: '1E293B'
+                                });
+                                yPos += 0.4;
+                                if (yPos > 5) break;
+                            } else {
+                                yPos += 0.2;
+                            }
+                        }
                     } else {
-                        // Fallback shape if image fails
-                        pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                            x: 5.5, y: 1.2, w: 4.2, h: 3.5,
-                            fill: { type: 'solid', color: 'E2E8F0' }
-                        });
-                        pptSlide.addText('📷 Science Image', {
-                            x: 5.5, y: 2.5, w: 4.2, h: 0.5,
-                            fontSize: 14, color: '666666', align: 'center'
-                        });
+                        // No image, text takes full width
+                        const lines = (slide.content || '').split('\n');
+                        let yPos = 1.2;
+                        for (let line of lines) {
+                            if (line.trim()) {
+                                pptSlide.addText(line.trim(), {
+                                    x: 0.5, y: yPos, w: 9, h: 0.5,
+                                    fontSize: 14, color: '1E293B'
+                                });
+                                yPos += 0.4;
+                                if (yPos > 5) break;
+                            } else {
+                                yPos += 0.2;
+                            }
+                        }
                     }
                 } catch(e) {
-                    console.warn('Image load failed');
-                    pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                        x: 5.5, y: 1.2, w: 4.2, h: 3.5,
-                        fill: { type: 'solid', color: 'F1F5F9' }
-                    });
-                    pptSlide.addText('🔬 Science Visual', {
-                        x: 5.5, y: 2.5, w: 4.2, h: 0.5,
-                        fontSize: 14, color: '666666', align: 'center'
-                    });
-                }
-                
-                // Add EXACT TEXT - preserving all formatting, line breaks, and content
-                // Split by newlines to preserve formatting
-                const lines = slide.content.split('\n');
-                let yPosition = 1.3;
-                
-                for (let line of lines) {
-                    if (line.trim()) {
-                        // Check if it's a bullet point (starts with • or - or number)
-                        if (line.trim().startsWith('•') || line.trim().startsWith('-') || /^\d+\./.test(line.trim())) {
+                    // If image fails, text takes full width
+                    const lines = (slide.content || '').split('\n');
+                    let yPos = 1.2;
+                    for (let line of lines) {
+                        if (line.trim()) {
                             pptSlide.addText(line.trim(), {
-                                x: 0.5, y: yPosition, w: 4.8, h: 0.5,
-                                fontSize: 16, color: '1E293B', bullet: false
+                                x: 0.5, y: yPos, w: 9, h: 0.5,
+                                fontSize: 14, color: '1E293B'
                             });
+                            yPos += 0.4;
+                            if (yPos > 5) break;
                         } else {
-                            pptSlide.addText(line.trim(), {
-                                x: 0.5, y: yPosition, w: 4.8, h: 0.5,
-                                fontSize: 16, color: '334155'
-                            });
+                            yPos += 0.2;
                         }
-                        yPosition += 0.45;
-                        
-                        // Prevent text from overlapping with image
-                        if (yPosition > 5.0) break;
-                    } else {
-                        yPosition += 0.2; // Add spacing for empty lines
                     }
                 }
                 
-                // If no content, show placeholder
-                if (!slide.content.trim()) {
-                    pptSlide.addText('Enter your content here', {
-                        x: 0.5, y: 1.5, w: 4.8, h: 0.5,
-                        fontSize: 16, color: '94A3B8', italic: true
-                    });
-                }
-                
-                // Add slide number
+                // Slide number
                 pptSlide.addText(`${i + 1} / ${slides.length}`, {
                     x: 9, y: 5.3, w: 1, h: 0.3,
-                    fontSize: 11, color: '94A3B8', align: 'right'
-                });
-                
-                // Add educational footer
-                pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                    x: 0, y: 5.6, w: '100%', h: 0.02,
-                    fill: { type: 'solid', color: 'CBD5E1' }
-                });
-                pptSlide.addText('Science Teacher Pro · Educational Resource', {
-                    x: 0, y: 5.65, w: '100%', h: 0.25,
-                    fontSize: 9, color: '94A3B8', align: 'center'
+                    fontSize: 10, color: '94A3B8', align: 'right'
                 });
             }
             
-            const fileName = `Science_Presentation_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.pptx`;
+            const fileName = `Science_Lesson_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.pptx`;
             await pptx.writeFile({ fileName });
-            updateStatus(`✅ Success! "${fileName}" created with ${slides.length} slides. Your exact text is preserved with large images!`, 'success');
+            updateStatus(`✅ Success! Saved as "${fileName}" with ${slides.length} slides.`, 'success');
             
         } catch (error) {
             console.error(error);
-            updateStatus('❌ Error creating presentation: ' + error.message, 'error');
+            updateStatus('❌ Error: ' + error.message, 'error');
         } finally {
-            generateBtn.innerHTML = originalText;
-            generateBtn.disabled = false;
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
     }
     
     function addSlide() {
         slides.push({
-            id: slideIdCounter++,
-            title: '',
-            content: ''
+            id: nextId++,
+            title: 'New Slide',
+            content: 'Enter your lesson content here...',
+            imageUrl: ''
         });
-        renderSlideEditor();
-        updateStatus('New slide added! Enter your exact text.', 'info');
+        renderEditor();
+        updateStatus('New slide added! Edit the title, content, and image URL.', 'info');
     }
     
     function loadExample() {
         slides = [
-            { 
-                id: slideIdCounter++, 
-                title: 'The Life Cycle of a Butterfly', 
-                content: 'Butterflies go through four stages of metamorphosis:\n\n• Egg Stage: Female butterflies lay eggs on leaves\n• Larva Stage (Caterpillar): Eats leaves and grows rapidly\n• Pupa Stage (Chrysalis): Transformation occurs inside\n• Adult Stage: Beautiful butterfly emerges and flies\n\nThis complete cycle takes about 30 days from egg to adult.' 
-            },
-            { 
-                id: slideIdCounter++, 
-                title: 'The Water Cycle', 
-                content: 'Water constantly moves through Earth\'s systems:\n\n1. Evaporation: Sun heats water, turning it into vapor\n2. Condensation: Water vapor cools and forms clouds\n3. Precipitation: Water falls as rain, snow, or hail\n4. Collection: Water gathers in oceans, lakes, and rivers\n\nThis cycle repeats continuously and is essential for all life.' 
-            },
-            { 
-                id: slideIdCounter++, 
-                title: 'Frog Life Cycle', 
-                content: 'Amphibians like frogs undergo amazing changes:\n\nEgg Stage: Frog eggs are laid in water in clusters\nTadpole Stage: Hatches with gills and a tail\nTadpole with Legs: Hind legs develop first\nFroglet: Lungs develop, tail shrinks\nAdult Frog: Fully developed, lives on land and water\n\nThis process is called metamorphosis.' 
-            },
-            { 
-                id: slideIdCounter++, 
-                title: 'Ecosystem Relationships', 
-                content: 'Living things interact in ecosystems:\n\n• Producers: Plants make their own food through photosynthesis\n• Consumers: Animals eat plants or other animals\n• Decomposers: Break down dead matter\n\nFood Chain Example:\nSun → Grass → Grasshopper → Frog → Snake → Hawk\n\nEnergy flows from one organism to another in this chain.' 
-            }
+            { id: nextId++, title: 'The Life Cycle of a Butterfly', content: 'Butterflies go through four stages of metamorphosis:\n\nEgg Stage: Female butterflies lay eggs on leaves. The eggs are tiny and attached to host plants.\n\nLarva Stage (Caterpillar): The caterpillar hatches and eats constantly. It grows rapidly and sheds its skin multiple times.\n\nPupa Stage (Chrysalis): The caterpillar forms a chrysalis. Inside, the body transforms completely.\n\nAdult Stage: A beautiful butterfly emerges. It spreads its wings, flies, and begins the cycle again.\n\nThis complete metamorphosis takes about 30 days from egg to adult.', imageUrl: imageDatabase.butterfly },
+            { id: nextId++, title: 'The Water Cycle', content: 'Water continuously moves through Earth\'s systems:\n\nEvaporation: The sun heats water in oceans, lakes, and rivers. Water turns into water vapor (gas).\n\nCondensation: Water vapor rises and cools. It forms tiny droplets that create clouds.\n\nPrecipitation: When droplets become heavy, they fall as rain, snow, sleet, or hail.\n\nCollection: Water gathers in oceans, lakes, rivers, and underground. The cycle repeats.\n\nThe water cycle is powered by the sun and is essential for all life on Earth.', imageUrl: imageDatabase.photosynthesis },
+            { id: nextId++, title: 'Frog Life Cycle', content: 'Frogs undergo amazing metamorphosis:\n\nEgg Stage: Female frogs lay eggs in water. Eggs are surrounded by jelly for protection.\n\nTadpole Stage: Tadpoles hatch with gills for breathing underwater. They have tails for swimming.\n\nTadpole with Legs: Hind legs develop first, then front legs. Lungs begin to develop.\n\nFroglet: The tail shrinks. The froglet can breathe air and starts living on land.\n\nAdult Frog: Fully developed with no tail. Lives on land and in water. Eats insects.\n\nComplete metamorphosis takes 12-16 weeks depending on the species.', imageUrl: imageDatabase.frog }
         ];
-        renderSlideEditor();
-        updateStatus('Science example loaded! 4 slides with complete content. Your exact text will be preserved in PowerPoint with large images.', 'success');
+        renderEditor();
+        updateStatus('Example loaded! 3 slides with complete content.', 'success');
     }
     
     document.getElementById('addSlideBtn').addEventListener('click', addSlide);
@@ -641,7 +626,9 @@
     
     window.removeSlide = removeSlide;
     window.updateSlide = updateSlide;
+    window.suggestImageForSlide = suggestImageForSlide;
     
+    // Start with one empty slide
     addSlide();
 </script>
 </body>
