@@ -2,87 +2,140 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educational Video Slides</title>
+    <title>Zoology Lecture Slide Generator</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            background-color: #f4f4f9;
-            color: #333;
+        :root {
+            --primary-bg: #ffffff;
+            --accent-blue: #2c3e50;
+            --text-main: #333;
         }
-        .slide-container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            min-height: 500px;
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .presentation-container {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .slide {
+            background: var(--primary-bg);
+            width: 960px; /* Standard 16:9 ratio feel */
+            min-height: 540px;
+            margin-bottom: 50px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-left: 15px solid var(--accent-blue);
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .slide-text {
+            display: flex;
+            flex-direction: column;
+        }
+        h2 {
+            color: var(--accent-blue);
+            font-size: 2.2rem;
+            border-bottom: 2px solid #eee;
+            margin-top: 0;
+        }
+        .content {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .slide-image-container {
+            display: flex;
+            align-items: center;
             justify-content: center;
+            background: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
         }
-        .slide-header {
-            border-bottom: 2px solid #2c3e50;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        .slide-content {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-        .slide-image {
-            width: 100%;
+        .slide-image-container img {
+            max-width: 100%;
             max-height: 400px;
             object-fit: contain;
-            border-radius: 5px;
-            margin-top: 15px;
-            background-color: #eee;
         }
-        .nav-hint {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #888;
-            margin-top: 50px;
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-weight: bold;
+            color: #999;
         }
         @media print {
-            .slide-container {
-                page-break-after: always;
-                box-shadow: none;
-                margin: 0;
-            }
+            .slide { margin: 0; page-break-after: always; box-shadow: none; border: 1px solid #ddd; }
         }
     </style>
 </head>
 <body>
 
-    <div class="slide-container" id="slide1">
-        <div class="slide-header">
-            <h2>Slide 1: Introduction</h2>
-        </div>
-        <div class="slide-content">
-            <p>Insert your primary introductory text here. This section is designed to be large and readable for your viewers.</p>
-        </div>
-        <img src="image1.jpg" alt="Slide Image 1" class="slide-image">
-    </div>
+<div class="presentation-container" id="output"></div>
 
-    <div class="slide-container" id="slide2">
-        <div class="slide-header">
-            <h2>Slide 2: Core Concept</h2>
-        </div>
-        <div class="slide-content">
-            <ul>
-                <li>Key Point A: Explain the first major biological process.</li>
-                <li>Key Point B: Detail the morphological characteristics.</li>
-                <li>Key Point C: Summarize the findings.</li>
-            </ul>
-        </div>
-        <img src="image2.jpg" alt="Slide Image 2" class="slide-image">
-    </div>
+<script>
+const rawText = `Slide 1: Title Slide
+Chapter 2: Developmental Biology of Frog
+Gametogenesis: The Formation of Gametes
+[Lokendra Chand]
 
-    <div class="nav-hint">End of Slides</div>
+---
+
+Slide 2: What is Gametogenesis?
+Definition: The process by which gametes (sperms and ova) are formed in sexually reproducing animals.
+Key Mechanisms:
+• Meiosis – Reduces chromosome number from diploid (2n) to haploid (n)
+• Cellular Differentiation – Transforms generic cells into specialized sperm or egg cells
+Two Types:
+• Spermatogenesis – Formation of sperm (male gamete)
+• Oogenesis – Formation of the ovum/egg (female gamete)
+
+---
+
+Slide 3: Spermatogenesis (Overview)
+A. Spermatogenesis – Production of Sperm
+Location: Seminiferous tubules of the testes
+Purpose: To produce haploid, motile spermatozoa from diploid germ cells
+Four Phases: Multiplication → Growth → Maturation → Spermiogenesis`;
+
+// Function to generate slides
+function renderSlides(text) {
+    const slides = text.split('---');
+    const container = document.getElementById('output');
+    
+    slides.forEach((content, index) => {
+        const slideDiv = document.createElement('div');
+        slideDiv.className = 'slide';
+        
+        // Extract Title (First Line)
+        const lines = content.trim().split('\n');
+        const title = lines[0];
+        const body = lines.slice(1).join('\n');
+
+        // Placeholder for image search logic
+        // For local use, you can name images slide1.jpg, slide2.jpg etc.
+        const imgPath = `slide${index + 1}.jpg`; 
+
+        slideDiv.innerHTML = `
+            <div class="slide-text">
+                <h2>${title}</h2>
+                <div class="content">${body}</div>
+            </div>
+            <div class="slide-image-container">
+                <img src="${imgPath}" onerror="this.src='https://via.placeholder.com/400x300?text=Zoology+Illustration'" alt="Slide Image">
+            </div>
+            <div class="slide-number">Slide ${index + 1}</div>
+        `;
+        container.appendChild(slideDiv);
+    });
+}
+
+renderSlides(rawText);
+</script>
 
 </body>
 </html>
