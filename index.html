@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SlideMaster Pro · Professional Text to PowerPoint with Smart Images</title>
+    <title>ScienceSlideMaker · Professional Science Presentations for Teachers</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
             min-height: 100vh;
             padding: 2rem;
         }
@@ -23,13 +23,13 @@
             margin: 0 auto;
             background: white;
             border-radius: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3);
             overflow: hidden;
         }
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             padding: 2rem;
             text-align: center;
@@ -40,12 +40,20 @@
             margin-bottom: 0.5rem;
         }
 
+        .header h1 span {
+            background: rgba(255,255,255,0.2);
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            margin-left: 0.5rem;
+        }
+
         .header p {
-            opacity: 0.9;
+            opacity: 0.95;
             font-size: 1.1rem;
         }
 
-        /* Main Content */
+        /* Main Grid */
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -58,29 +66,85 @@
             background: #f8fafc;
             border-radius: 1rem;
             padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .input-section h2 {
-            color: #1e293b;
+            color: #1e3c72;
             margin-bottom: 1rem;
             font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        textarea {
-            width: 100%;
-            min-height: 400px;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
+        .slide-input {
+            margin-bottom: 1rem;
+            background: white;
             border-radius: 0.75rem;
-            font-family: inherit;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            resize: vertical;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
         }
 
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
+        .slide-input:hover {
+            border-color: #2a5298;
+        }
+
+        .slide-header {
+            background: #f1f5f9;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+            font-weight: 600;
+            color: #1e3c72;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .slide-number {
+            background: #2a5298;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        .remove-slide {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .remove-slide:hover {
+            background: #dc2626;
+        }
+
+        .slide-content {
+            padding: 1rem;
+        }
+
+        .slide-title-input, .slide-text-input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            margin-bottom: 0.75rem;
+        }
+
+        .slide-title-input {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .slide-text-input {
+            min-height: 100px;
+            resize: vertical;
         }
 
         /* Controls */
@@ -91,46 +155,43 @@
             flex-wrap: wrap;
         }
 
-        .control-group {
-            flex: 1;
-        }
-
-        .control-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #475569;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 0.6rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-family: inherit;
-        }
-
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .btn {
+            padding: 0.7rem 1.2rem;
             border: none;
-            padding: 0.8rem 1.5rem;
             border-radius: 0.75rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
-            font-size: 1rem;
+            transition: all 0.2s;
+            font-family: inherit;
         }
 
-        button:hover {
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
         }
 
-        button:active {
-            transform: translateY(0);
+        .btn-secondary {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
         }
 
         /* Preview Section */
@@ -143,77 +204,86 @@
         }
 
         .preview-section h2 {
-            color: #1e293b;
+            color: #1e3c72;
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
 
-        .slide-preview {
+        .slide-card {
             background: white;
             border-radius: 0.75rem;
-            padding: 1rem;
             margin-bottom: 1rem;
+            overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: transform 0.2s;
         }
 
-        .slide-preview:hover {
+        .slide-card:hover {
             transform: translateX(5px);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .slide-number {
-            font-size: 0.75rem;
-            color: #667eea;
+        .slide-card-header {
+            background: #1e3c72;
+            color: white;
+            padding: 0.5rem 1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
         }
 
-        .slide-title {
+        .slide-card-body {
+            padding: 1rem;
+        }
+
+        .slide-card-title {
             font-weight: 700;
             font-size: 1rem;
-            color: #1e293b;
+            color: #1e3c72;
             margin-bottom: 0.5rem;
         }
 
-        .slide-content {
+        .slide-card-text {
             font-size: 0.85rem;
             color: #475569;
-            margin-bottom: 0.5rem;
             line-height: 1.4;
+            margin-bottom: 0.75rem;
         }
 
-        .slide-image-preview {
+        .slide-card-image {
             width: 100%;
-            height: 120px;
-            background: #f1f5f9;
+            height: 140px;
+            background: #e2e8f0;
             border-radius: 0.5rem;
             object-fit: cover;
-            margin-top: 0.5rem;
         }
 
         /* Status */
         .status {
-            padding: 1rem;
             margin: 0 2rem 2rem 2rem;
+            padding: 1rem;
             border-radius: 0.75rem;
             text-align: center;
             font-weight: 500;
         }
 
-        .status.info {
+        .status-info {
             background: #dbeafe;
             color: #1e40af;
         }
 
-        .status.success {
+        .status-success {
             background: #d1fae5;
             color: #065f46;
         }
 
-        .status.error {
+        .status-error {
             background: #fee2e2;
             color: #991b1b;
+        }
+
+        .status-warning {
+            background: #fed7aa;
+            color: #9b2c1d;
         }
 
         /* Loading */
@@ -224,7 +294,7 @@
             border: 3px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
@@ -244,175 +314,169 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🎯 SlideMaster Pro</h1>
-        <p>Transform your text into professional PowerPoint presentations with AI-powered images</p>
+        <h1>🔬 ScienceSlideMaker <span>For Teachers</span></h1>
+        <p>Create professional science presentations with automatic educational images from trusted sources</p>
     </div>
 
     <div class="main-content">
-        <!-- Left Panel -->
+        <!-- Left Panel - Slide Editor -->
         <div class="input-section">
-            <h2>📝 Step 1: Enter Your Content</h2>
-            <textarea id="contentInput" placeholder="Enter your presentation content. Use '---' to separate slides or leave blank lines.
-
-Example:
-Introduction to AI in 2026
-Artificial Intelligence has transformed every industry. From healthcare to finance, AI is revolutionizing how we work and live.
----
-Key AI Technologies
-Machine Learning, Deep Learning, and Neural Networks are driving innovation. These technologies enable computers to learn from data.
----
-Future Outlook
-By 2030, AI will contribute $15.7 trillion to the global economy. The future is intelligent and automated."></textarea>
+            <h2>📝 Create Your Science Slides</h2>
+            <div id="slidesContainer"></div>
             
             <div class="controls">
-                <div class="control-group">
-                    <label>🎨 Image Style</label>
-                    <select id="imageStyle">
-                        <option value="business">Business & Professional</option>
-                        <option value="technology">Technology & Innovation</option>
-                        <option value="nature">Nature & Environment</option>
-                        <option value="abstract">Abstract & Creative</option>
-                        <option value="people">People & Lifestyle</option>
-                    </select>
-                </div>
-                <div class="control-group">
-                    <label>📊 Slide Layout</label>
-                    <select id="layoutStyle">
-                        <option value="modern">Modern</option>
-                        <option value="corporate">Corporate</option>
-                        <option value="creative">Creative</option>
-                    </select>
-                </div>
+                <button class="btn btn-secondary" id="addSlideBtn">➕ Add New Slide</button>
+                <button class="btn btn-primary" id="generateBtn">🎓 Generate Science PowerPoint</button>
             </div>
-            
-            <button id="generateBtn" style="margin-top: 1rem;">
-                🚀 Generate Professional PowerPoint
-            </button>
+            <div class="controls" style="margin-top: 0.5rem;">
+                <button class="btn" id="loadBiologyBtn" style="background: #16a34a; color: white;">🧬 Load Biology Example</button>
+                <button class="btn" id="loadChemistryBtn" style="background: #7c3aed; color: white;">⚗️ Load Chemistry Example</button>
+                <button class="btn" id="loadPhysicsBtn" style="background: #dc2626; color: white;">⚡ Load Physics Example</button>
+            </div>
         </div>
 
-        <!-- Right Panel -->
+        <!-- Right Panel - Preview -->
         <div class="preview-section">
-            <h2>👁️ Slide Preview</h2>
+            <h2>🔍 Slide Preview</h2>
             <div id="previewContainer">
                 <p style="color: #64748b; text-align: center; padding: 2rem;">
-                    Your slides will appear here after generation
+                    Add slides and they will appear here
                 </p>
             </div>
         </div>
     </div>
 
-    <div id="statusMessage" class="status info">
-        💡 Ready to create your presentation. Enter your content and click generate!
+    <div id="statusMessage" class="status status-info">
+        💡 Enter your science content for each slide. Images will be automatically added from educational sources!
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 <script>
-    let currentSlides = [];
+    let slides = [];
+    let slideIdCounter = 0;
 
-    // Smart image generator with high-quality, relevant images
-    function getImageForSlide(title, content, style, index) {
-        // Extract keywords for better image matching
-        const keywords = (title + ' ' + content).toLowerCase();
-        let imageKeyword = '';
+    // Science-specific image database (high-quality educational images)
+    const scienceImages = {
+        // Biology
+        'cell': 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&h=450&fit=crop',
+        'dna': 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?w=800&h=450&fit=crop',
+        'microscope': 'https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=800&h=450&fit=crop',
+        'photosynthesis': 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=800&h=450&fit=crop',
+        'human body': 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=800&h=450&fit=crop',
+        'bacteria': 'https://images.unsplash.com/photo-1583912267694-b62f2d0c10a6?w=800&h=450&fit=crop',
         
-        if (keywords.includes('ai') || keywords.includes('artificial') || keywords.includes('robot')) imageKeyword = 'artificial-intelligence';
-        else if (keywords.includes('tech') || keywords.includes('digital') || keywords.includes('software')) imageKeyword = 'technology';
-        else if (keywords.includes('business') || keywords.includes('market') || keywords.includes('finance')) imageKeyword = 'business';
-        else if (keywords.includes('health') || keywords.includes('medical') || keywords.includes('doctor')) imageKeyword = 'healthcare';
-        else if (keywords.includes('education') || keywords.includes('learning') || keywords.includes('school')) imageKeyword = 'education';
-        else if (keywords.includes('environment') || keywords.includes('green') || keywords.includes('sustainable')) imageKeyword = 'environment';
-        else if (keywords.includes('marketing') || keywords.includes('social media')) imageKeyword = 'marketing';
-        else imageKeyword = 'professional';
+        // Chemistry
+        'chemical': 'https://images.unsplash.com/photo-1532187643603-ba119ca4109e?w=800&h=450&fit=crop',
+        'molecule': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop',
+        'atom': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=450&fit=crop',
+        'lab': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop',
+        'experiment': 'https://images.unsplash.com/photo-1532187643603-ba119ca4109e?w=800&h=450&fit=crop',
         
-        // Use Lorem Picsum with specific IDs for consistent, professional images
-        // These are high-quality, professional stock photos
-        const professionalImages = [
-            'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=450&fit=crop', // tech
-            'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=450&fit=crop', // business
-            'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=450&fit=crop', // team
-            'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=450&fit=crop', // education
-            'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=450&fit=crop', // coding
-            'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=450&fit=crop', // data
-            'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=450&fit=crop', // analytics
-            'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop', // growth
-        ];
+        // Physics
+        'physics': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=450&fit=crop',
+        'energy': 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=800&h=450&fit=crop',
+        'magnet': 'https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=800&h=450&fit=crop',
+        'gravity': 'https://images.unsplash.com/photo-1536697246787-1f7ae568d89a?w=800&h=450&fit=crop',
+        'space': 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800&h=450&fit=crop',
         
-        // Use index to get different images but relevant to keyword
-        const imageMap = {
-            'artificial-intelligence': professionalImages[0],
-            'technology': professionalImages[4],
-            'business': professionalImages[1],
-            'healthcare': professionalImages[6],
-            'education': professionalImages[3],
-            'environment': 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=800&h=450&fit=crop',
-            'marketing': professionalImages[2],
-            'professional': professionalImages[index % professionalImages.length]
-        };
+        // General Science
+        'science': 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=450&fit=crop',
+        'education': 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=450&fit=crop',
+        'research': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop'
+    };
+
+    // Smart image selection based on content
+    function getScienceImage(title, content) {
+        const text = (title + ' ' + content).toLowerCase();
         
-        return imageMap[imageKeyword] || professionalImages[index % professionalImages.length];
+        // Biology keywords
+        if (text.includes('cell') || text.includes('biology') || text.includes('organism')) return scienceImages.cell;
+        if (text.includes('dna') || text.includes('gene') || text.includes('genetic')) return scienceImages.dna;
+        if (text.includes('microscope') || text.includes('microbe')) return scienceImages.microscope;
+        if (text.includes('photosynthesis') || text.includes('plant')) return scienceImages.photosynthesis;
+        if (text.includes('human') || text.includes('body') || text.includes('anatomy')) return scienceImages['human body'];
+        if (text.includes('bacteria') || text.includes('virus')) return scienceImages.bacteria;
+        
+        // Chemistry keywords
+        if (text.includes('chemical') || text.includes('reaction')) return scienceImages.chemical;
+        if (text.includes('molecule') || text.includes('compound')) return scienceImages.molecule;
+        if (text.includes('atom') || text.includes('element')) return scienceImages.atom;
+        if (text.includes('lab') || text.includes('experiment')) return scienceImages.lab;
+        
+        // Physics keywords
+        if (text.includes('physics') || text.includes('quantum')) return scienceImages.physics;
+        if (text.includes('energy') || text.includes('power')) return scienceImages.energy;
+        if (text.includes('magnet') || text.includes('magnetic')) return scienceImages.magnet;
+        if (text.includes('gravity') || text.includes('force')) return scienceImages.gravity;
+        if (text.includes('space') || text.includes('astronomy') || text.includes('planet')) return scienceImages.space;
+        
+        // Default science image
+        return scienceImages.science;
     }
 
-    // Parse text into slides
-    function parseSlides(text) {
-        // Split by --- or double newline
-        let rawSlides = text.split(/\n---\n|\n\s*\n/);
-        const slides = [];
-        
-        for (let raw of rawSlides) {
-            raw = raw.trim();
-            if (!raw) continue;
-            
-            const lines = raw.split('\n');
-            const title = lines[0].trim();
-            const content = lines.slice(1).join('\n').trim();
-            
-            slides.push({
-                title: title || 'Untitled Slide',
-                content: content || 'No additional content provided.',
-                fullText: raw
-            });
-        }
-        
-        // Limit to 15 slides for performance
-        if (slides.length > 15) {
-            slides.length = 15;
-            showStatus('Limited to first 15 slides for optimal performance', 'info');
-        }
-        
-        return slides;
-    }
-
-    // Show status message
-    function showStatus(message, type = 'info') {
-        const statusDiv = document.getElementById('statusMessage');
-        statusDiv.textContent = message;
-        statusDiv.className = `status ${type}`;
-        setTimeout(() => {
-            if (statusDiv.className.includes(type)) {
-                statusDiv.className = 'status info';
-                statusDiv.textContent = '💡 Ready to create your presentation. Enter your content and click generate!';
-            }
-        }, 5000);
-    }
-
-    // Preview slides
-    function previewSlides(slides) {
-        const container = document.getElementById('previewContainer');
-        if (!slides.length) {
-            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">No slides to preview</p>';
+    // Render slide editor
+    function renderSlideEditor() {
+        const container = document.getElementById('slidesContainer');
+        if (slides.length === 0) {
+            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">Click "Add New Slide" to start creating your science presentation</p>';
             return;
         }
         
         let html = '';
         slides.forEach((slide, index) => {
-            const imageUrl = getImageForSlide(slide.title, slide.content, 'professional', index);
             html += `
-                <div class="slide-preview">
-                    <div class="slide-number">Slide ${index + 1}</div>
-                    <div class="slide-title">${escapeHtml(slide.title.substring(0, 60))}</div>
-                    <div class="slide-content">${escapeHtml(slide.content.substring(0, 100))}${slide.content.length > 100 ? '...' : ''}</div>
-                    <img src="${imageUrl}" class="slide-image-preview" alt="Slide preview" onerror="this.style.display='none'">
+                <div class="slide-input" data-id="${slide.id}">
+                    <div class="slide-header">
+                        <span class="slide-number">Slide ${index + 1}</span>
+                        <button class="remove-slide" onclick="removeSlide(${slide.id})">🗑️ Remove</button>
+                    </div>
+                    <div class="slide-content">
+                        <input type="text" class="slide-title-input" placeholder="Slide Title (e.g., The Cell Structure)" value="${escapeHtml(slide.title)}" onchange="updateSlide(${slide.id}, 'title', this.value)">
+                        <textarea class="slide-text-input" placeholder="Enter your science content here. Include key facts, explanations, and teaching points..." onchange="updateSlide(${slide.id}, 'content', this.value)">${escapeHtml(slide.content)}</textarea>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        renderPreview();
+    }
+
+    // Update slide data
+    function updateSlide(id, field, value) {
+        const slide = slides.find(s => s.id === id);
+        if (slide) {
+            slide[field] = value;
+            renderPreview();
+        }
+    }
+
+    // Remove slide
+    function removeSlide(id) {
+        slides = slides.filter(s => s.id !== id);
+        renderSlideEditor();
+        updateStatus(`Slide removed. ${slides.length} slide(s) remaining.`, 'info');
+    }
+
+    // Render preview
+    function renderPreview() {
+        const container = document.getElementById('previewContainer');
+        if (slides.length === 0) {
+            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">No slides to preview. Add slides to see them here.</p>';
+            return;
+        }
+        
+        let html = '';
+        slides.forEach((slide, index) => {
+            const imageUrl = getScienceImage(slide.title, slide.content);
+            html += `
+                <div class="slide-card">
+                    <div class="slide-card-header">Slide ${index + 1}</div>
+                    <div class="slide-card-body">
+                        <div class="slide-card-title">${escapeHtml(slide.title || 'Untitled Slide')}</div>
+                        <div class="slide-card-text">${escapeHtml(slide.content.substring(0, 120))}${slide.content.length > 120 ? '...' : ''}</div>
+                        <img src="${imageUrl}" class="slide-card-image" alt="Science image" onerror="this.src='https://picsum.photos/id/20/800/450'">
+                    </div>
                 </div>
             `;
         });
@@ -425,202 +489,189 @@ By 2030, AI will contribute $15.7 trillion to the global economy. The future is 
         return div.innerHTML;
     }
 
-    // Create professional PowerPoint
-    async function createPowerPoint(slides) {
-        const PptxGenJS = window.PptxGenJS;
-        const pptx = new PptxGenJS();
-        
-        // Set presentation properties
-        pptx.layout = 'LAYOUT_WIDE';
-        pptx.author = 'SlideMaster Pro';
-        pptx.title = 'Professional Presentation';
-        pptx.subject = 'Auto-generated from text';
-        pptx.company = 'SlideMaster';
-        
-        // Define color schemes based on layout
-        const colorSchemes = {
-            modern: { primary: '667eea', secondary: '764ba2', accent: 'f59e0b' },
-            corporate: { primary: '1e293b', secondary: '475569', accent: '3b82f6' },
-            creative: { primary: 'ec489a', secondary: '8b5cf6', accent: '06b6d4' }
-        };
-        
-        const layout = document.getElementById('layoutStyle').value;
-        const colors = colorSchemes[layout];
-        
-        for (let i = 0; i < slides.length; i++) {
-            const slide = slides[i];
-            const imageUrl = getImageForSlide(slide.title, slide.content, document.getElementById('imageStyle').value, i);
-            
-            // Add new slide
-            const pptSlide = pptx.addSlide();
-            
-            // Add background gradient
-            pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                x: 0, y: 0, w: '100%', h: '100%',
-                fill: { type: 'solid', color: 'FFFFFF' }
-            });
-            
-            // Add decorative header bar
-            pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                x: 0, y: 0, w: '100%', h: 0.8,
-                fill: { type: 'solid', color: colors.primary }
-            });
-            
-            // Add slide number
-            pptSlide.addText(`${i + 1} / ${slides.length}`, {
-                x: 9.5, y: 5.2, w: 1, h: 0.3,
-                fontSize: 10, color: '94A3B8', align: 'right'
-            });
-            
-            // Add title
-            pptSlide.addText(slide.title, {
-                x: 0.5, y: 0.4, w: 9, h: 0.8,
-                fontSize: 32, bold: true, color: 'FFFFFF',
-                align: 'left'
-            });
-            
-            // Add image (right side)
-            try {
-                const response = await fetch(imageUrl);
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const base64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => resolve(reader.result);
-                        reader.readAsDataURL(blob);
-                    });
-                    
-                    pptSlide.addImage({
-                        data: base64,
-                        x: 5.5, y: 1.2, w: 4, h: 3,
-                        sizing: { type: 'contain', w: 4, h: 3 }
-                    });
-                }
-            } catch(e) {
-                console.warn('Image load failed, continuing without image');
+    function updateStatus(message, type) {
+        const statusDiv = document.getElementById('statusMessage');
+        statusDiv.textContent = message;
+        statusDiv.className = `status status-${type}`;
+        setTimeout(() => {
+            if (document.getElementById('statusMessage').textContent === message) {
+                statusDiv.className = 'status status-info';
+                statusDiv.textContent = '💡 Enter your science content for each slide. Images will be automatically added from educational sources!';
             }
-            
-            // Add content text with professional formatting
-            const paragraphs = slide.content.split('\n').filter(p => p.trim());
-            let textY = 1.5;
-            let textX = 0.5;
-            let textWidth = 4.8;
-            
-            // If image loaded successfully, adjust text position
-            pptSlide.addText(paragraphs.map(p => ({ text: p, options: { bullet: true } })), {
-                x: textX, y: textY, w: textWidth, h: 3.5,
-                fontSize: 14, color: '1E293B', lineSpacing: 28
-            });
-            
-            // Add professional footer
-            pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                x: 0, y: 5.3, w: '100%', h: 0.05,
-                fill: { type: 'solid', color: 'E2E8F0' }
-            });
-            
-            pptSlide.addText('SlideMaster Pro · AI-Powered Presentation', {
-                x: 0.5, y: 5.4, w: 9, h: 0.3,
-                fontSize: 9, color: '94A3B8', align: 'center'
-            });
-        }
-        
-        // Download the file
-        const fileName = `Presentation_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.pptx`;
-        await pptx.writeFile({ fileName });
-        return fileName;
+        }, 4000);
     }
 
-    // Main generation function
-    async function generatePresentation() {
-        const content = document.getElementById('contentInput').value;
-        
-        if (!content.trim()) {
-            showStatus('Please enter some content for your presentation!', 'error');
+    // Generate PowerPoint
+    async function generatePowerPoint() {
+        if (slides.length === 0) {
+            updateStatus('Please add at least one slide first!', 'error');
             return;
+        }
+        
+        // Check for empty titles/content
+        const emptySlides = slides.filter(s => !s.title.trim() || !s.content.trim());
+        if (emptySlides.length > 0) {
+            updateStatus(`⚠️ ${emptySlides.length} slide(s) have missing title or content. Please fill them in.`, 'warning');
         }
         
         const generateBtn = document.getElementById('generateBtn');
         const originalText = generateBtn.innerHTML;
-        generateBtn.innerHTML = '<span class="loading"></span> Creating Professional Presentation...';
+        generateBtn.innerHTML = '<span class="loading"></span> Creating Science Presentation...';
         generateBtn.disabled = true;
         
         try {
-            showStatus('📝 Analyzing your content and creating slides...', 'info');
+            const PptxGenJS = window.PptxGenJS;
+            const pptx = new PptxGenJS();
             
-            // Parse slides
-            const slides = parseSlides(content);
+            pptx.layout = 'LAYOUT_WIDE';
+            pptx.author = 'Science Teacher';
+            pptx.title = 'Science Presentation';
+            pptx.subject = 'Educational Science Content';
+            pptx.company = 'ScienceSlideMaker';
             
-            if (slides.length === 0) {
-                throw new Error('No valid slides found. Please check your formatting.');
+            for (let i = 0; i < slides.length; i++) {
+                const slide = slides[i];
+                const imageUrl = getScienceImage(slide.title, slide.content);
+                const pptSlide = pptx.addSlide();
+                
+                // Science theme colors
+                const scienceColors = {
+                    biology: '#2e7d32',
+                    chemistry: '#7b1fa2',
+                    physics: '#c62828',
+                    default: '#1e3c72'
+                };
+                
+                let themeColor = scienceColors.default;
+                const text = (slide.title + ' ' + slide.content).toLowerCase();
+                if (text.includes('cell') || text.includes('dna') || text.includes('biology')) themeColor = scienceColors.biology;
+                else if (text.includes('chemical') || text.includes('molecule') || text.includes('atom')) themeColor = scienceColors.chemistry;
+                else if (text.includes('physics') || text.includes('energy') || text.includes('force')) themeColor = scienceColors.physics;
+                
+                // Add header
+                pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
+                    x: 0, y: 0, w: '100%', h: 0.9,
+                    fill: { type: 'solid', color: themeColor }
+                });
+                
+                // Add title
+                pptSlide.addText(slide.title || 'Science Lesson', {
+                    x: 0.5, y: 0.2, w: 9, h: 0.7,
+                    fontSize: 32, bold: true, color: 'FFFFFF'
+                });
+                
+                // Add slide number
+                pptSlide.addText(`${i + 1} / ${slides.length}`, {
+                    x: 9, y: 5.2, w: 1, h: 0.3,
+                    fontSize: 11, color: '666666'
+                });
+                
+                // Add image
+                try {
+                    const response = await fetch(imageUrl);
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const base64 = await new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => resolve(reader.result);
+                            reader.readAsDataURL(blob);
+                        });
+                        
+                        pptSlide.addImage({
+                            data: base64,
+                            x: 5.8, y: 1.2, w: 3.7, h: 2.8,
+                            sizing: { type: 'contain', w: 3.7, h: 2.8 }
+                        });
+                    }
+                } catch(e) {
+                    console.warn('Image load failed');
+                }
+                
+                // Add content text
+                const paragraphs = slide.content.split('\n').filter(p => p.trim());
+                pptSlide.addText(paragraphs.map(p => ({ text: p, options: { bullet: true } })), {
+                    x: 0.5, y: 1.2, w: 5, h: 3.5,
+                    fontSize: 14, color: '2C3E50', lineSpacing: 28
+                });
+                
+                // Add footer
+                pptSlide.addText('ScienceSlideMaker · Educational Resource', {
+                    x: 0, y: 5.5, w: '100%', h: 0.3,
+                    fontSize: 9, color: 'AAAAAA', align: 'center'
+                });
             }
             
-            showStatus(`✨ Created ${slides.length} slides. Adding professional images and formatting...`, 'info');
-            
-            // Preview slides
-            previewSlides(slides);
-            currentSlides = slides;
-            
-            // Create PowerPoint
-            showStatus('📊 Generating PowerPoint file with professional layout...', 'info');
-            const fileName = await createPowerPoint(slides);
-            
-            showStatus(`✅ Success! Presentation saved as "${fileName}" with ${slides.length} professionally formatted slides!`, 'success');
+            const fileName = `Science_Presentation_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.pptx`;
+            await pptx.writeFile({ fileName });
+            updateStatus(`✅ Success! "${fileName}" created with ${slides.length} science slides and educational images!`, 'success');
             
         } catch (error) {
             console.error(error);
-            showStatus('❌ Error: ' + error.message, 'error');
+            updateStatus('❌ Error creating presentation: ' + error.message, 'error');
         } finally {
             generateBtn.innerHTML = originalText;
             generateBtn.disabled = false;
         }
     }
     
-    // Add example content
-    function addExampleContent() {
-        const example = `The Future of Artificial Intelligence
-AI is revolutionizing every industry. From healthcare to finance, artificial intelligence is transforming how we work and live. Machine learning algorithms are becoming more sophisticated every day.
----
-Key Technologies Driving AI
-• Machine Learning and Deep Learning
-• Natural Language Processing
-• Computer Vision
-• Neural Networks and Neural Architecture
-These technologies work together to create intelligent systems that can learn and adapt.
----
-AI in Healthcare
-AI is improving diagnosis accuracy by 40%. Medical imaging analysis, drug discovery, and personalized treatment plans are just the beginning. The integration of AI in healthcare will save millions of lives.
----
-Ethical AI Development
-Responsible AI development is crucial. We need frameworks that ensure fairness, transparency, and accountability. Ethics must be at the core of AI innovation.
----
-The Economic Impact
-By 2030, AI will contribute $15.7 trillion to the global economy. This represents a 14% increase in GDP. Companies adopting AI are seeing 30% higher profit margins.
----
-Getting Started with AI
-Start small, think big. Identify key areas where AI can add value in your organization. Invest in talent, infrastructure, and ethical frameworks. The future belongs to those who embrace AI responsibly.`;
-        
-        document.getElementById('contentInput').value = example;
-        showStatus('Example content loaded! Click generate to create your presentation.', 'info');
+    // Add new slide
+    function addSlide() {
+        slides.push({
+            id: slideIdCounter++,
+            title: '',
+            content: ''
+        });
+        renderSlideEditor();
+        updateStatus('New slide added! Enter your science content.', 'info');
     }
     
-    // Add example button
-    const controlsDiv = document.querySelector('.controls');
-    const exampleButton = document.createElement('button');
-    exampleButton.innerHTML = '📋 Load Example Content';
-    exampleButton.style.marginTop = '0.5rem';
-    exampleButton.style.background = 'linear-gradient(135deg, #64748b 0%, #475569 100%)';
-    exampleButton.onclick = addExampleContent;
-    controlsDiv.parentNode.insertBefore(exampleButton, controlsDiv.nextSibling);
+    // Load examples
+    function loadBiologyExample() {
+        slides = [
+            { id: slideIdCounter++, title: 'The Structure of a Cell', content: 'Cells are the basic building blocks of all living things.\n\n• Nucleus: Contains DNA and controls cell activities\n• Mitochondria: Powerhouse of the cell, produces energy\n• Cell Membrane: Controls what enters and exits\n• Cytoplasm: Jelly-like substance where reactions occur' },
+            { id: slideIdCounter++, title: 'Photosynthesis', content: 'Plants convert sunlight into energy through photosynthesis.\n\nEquation: 6CO₂ + 6H₂O + Light → C₆H₁₂O₆ + 6O₂\n\nFactors affecting rate:\n• Light intensity\n• Carbon dioxide concentration\n• Temperature' },
+            { id: slideIdCounter++, title: 'The Human Digestive System', content: 'The digestive system breaks down food for absorption.\n\nOrgans involved:\n1. Mouth - mechanical and chemical digestion\n2. Stomach - protein digestion begins\n3. Small intestine - nutrient absorption\n4. Large intestine - water absorption' },
+            { id: slideIdCounter++, title: 'DNA Structure', content: 'DNA contains genetic instructions for all living organisms.\n\nKey features:\n• Double helix structure\n• Nucleotides: A, T, C, G\n• Base pairing rules: A-T, C-G\n• Genes code for proteins' }
+        ];
+        renderSlideEditor();
+        updateStatus('Biology example loaded! 4 slides about cells, photosynthesis, digestion, and DNA.', 'success');
+    }
     
-    // Event listener
-    document.getElementById('generateBtn').addEventListener('click', generatePresentation);
+    function loadChemistryExample() {
+        slides = [
+            { id: slideIdCounter++, title: 'The Periodic Table', content: 'The periodic table organizes elements by atomic number.\n\nGroups (vertical): Similar properties\nPeriods (horizontal): Same energy levels\n\nKey groups:\n• Alkali metals (Group 1): Highly reactive\n• Halogens (Group 17): Reactive nonmetals\n• Noble gases (Group 18): Inert gases' },
+            { id: slideIdCounter++, title: 'Chemical Reactions', content: 'Chemical reactions involve breaking and forming bonds.\n\nTypes of reactions:\n• Synthesis: A + B → AB\n• Decomposition: AB → A + B\n• Single replacement: A + BC → AC + B\n• Combustion: Fuel + O₂ → CO₂ + H₂O' },
+            { id: slideIdCounter++, title: 'Atomic Structure', content: 'Atoms consist of protons, neutrons, and electrons.\n\n• Protons: Positive charge, in nucleus\n• Neutrons: Neutral, in nucleus\n• Electrons: Negative charge, orbit nucleus\n\nAtomic number = number of protons\nMass number = protons + neutrons' },
+            { id: slideIdCounter++, title: 'States of Matter', content: 'Matter exists in three main states.\n\nSolid: Fixed shape, particles tightly packed\nLiquid: Takes shape of container, particles flow\nGas: Fills container, particles move freely\n\nChanges of state:\nMelting, freezing, evaporation, condensation' }
+        ];
+        renderSlideEditor();
+        updateStatus('Chemistry example loaded! 4 slides about periodic table, reactions, atoms, and states of matter.', 'success');
+    }
     
-    // Load example on startup
-    setTimeout(() => {
-        if (!document.getElementById('contentInput').value.trim()) {
-            addExampleContent();
-        }
-    }, 500);
+    function loadPhysicsExample() {
+        slides = [
+            { id: slideIdCounter++, title: 'Newton\'s Laws of Motion', content: 'Sir Isaac Newton described how objects move.\n\nFirst Law (Inertia): Objects stay at rest or motion unless acted upon.\n\nSecond Law (F = ma): Force = mass × acceleration\n\nThird Law: For every action, there is an equal and opposite reaction.' },
+            { id: slideIdCounter++, title: 'Energy Types and Transformations', content: 'Energy cannot be created or destroyed, only transformed.\n\nTypes of energy:\n• Kinetic: Energy of motion\n• Potential: Stored energy\n• Thermal: Heat energy\n• Chemical: Stored in bonds\n\nLaw of Conservation of Energy' },
+            { id: slideIdCounter++, title: 'Electricity and Circuits', content: 'Electricity flows through circuits.\n\nKey concepts:\n• Voltage (V): Electrical pressure\n• Current (I): Flow of electrons\n• Resistance (R): Opposition to flow\n\nOhm\'s Law: V = I × R' },
+            { id: slideIdCounter++, title: 'Waves and Sound', content: 'Waves transfer energy without transferring matter.\n\nWave properties:\n• Wavelength: Distance between peaks\n• Frequency: Waves per second\n• Amplitude: Wave height\n\nSpeed = frequency × wavelength' }
+        ];
+        renderSlideEditor();
+        updateStatus('Physics example loaded! 4 slides about motion, energy, electricity, and waves.', 'success');
+    }
+    
+    // Event listeners
+    document.getElementById('addSlideBtn').addEventListener('click', addSlide);
+    document.getElementById('generateBtn').addEventListener('click', generatePowerPoint);
+    document.getElementById('loadBiologyBtn').addEventListener('click', loadBiologyExample);
+    document.getElementById('loadChemistryBtn').addEventListener('click', loadChemistryExample);
+    document.getElementById('loadPhysicsBtn').addEventListener('click', loadPhysicsExample);
+    
+    // Make functions global for onclick
+    window.removeSlide = removeSlide;
+    window.updateSlide = updateSlide;
+    
+    // Initialize with one empty slide
+    addSlide();
 </script>
 </body>
 </html>
