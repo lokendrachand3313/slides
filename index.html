@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScienceSlideMaker · Professional Science Presentations for Teachers</title>
+    <title>Science Teacher Pro · Exact Text + Large Images PowerPoint Creator</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
             padding: 2rem;
         }
@@ -27,9 +27,8 @@
             overflow: hidden;
         }
 
-        /* Header */
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 100%);
             color: white;
             padding: 2rem;
             text-align: center;
@@ -40,20 +39,11 @@
             margin-bottom: 0.5rem;
         }
 
-        .header h1 span {
-            background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.8rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            margin-left: 0.5rem;
-        }
-
         .header p {
             opacity: 0.95;
             font-size: 1.1rem;
         }
 
-        /* Main Grid */
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -61,7 +51,6 @@
             padding: 2rem;
         }
 
-        /* Input Section */
         .input-section {
             background: #f8fafc;
             border-radius: 1rem;
@@ -99,7 +88,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
         }
 
         .slide-number {
@@ -143,11 +131,12 @@
         }
 
         .slide-text-input {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
-        /* Controls */
         .controls {
             margin-top: 1.5rem;
             display: flex;
@@ -185,16 +174,6 @@
             background: #059669;
         }
 
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        /* Preview Section */
         .preview-section {
             background: #f8fafc;
             border-radius: 1rem;
@@ -215,12 +194,6 @@
             margin-bottom: 1rem;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-
-        .slide-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .slide-card-header {
@@ -247,6 +220,7 @@
             color: #475569;
             line-height: 1.4;
             margin-bottom: 0.75rem;
+            white-space: pre-wrap;
         }
 
         .slide-card-image {
@@ -257,7 +231,6 @@
             object-fit: cover;
         }
 
-        /* Status */
         .status {
             margin: 0 2rem 2rem 2rem;
             padding: 1rem;
@@ -281,12 +254,6 @@
             color: #991b1b;
         }
 
-        .status-warning {
-            background: #fed7aa;
-            color: #9b2c1d;
-        }
-
-        /* Loading */
         .loading {
             display: inline-block;
             width: 20px;
@@ -314,40 +281,36 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🔬 ScienceSlideMaker <span>For Teachers</span></h1>
-        <p>Create professional science presentations with automatic educational images from trusted sources</p>
+        <h1>🔬 Science Teacher Pro</h1>
+        <p>Your exact text + Large images on every slide | Perfect for classroom presentations</p>
     </div>
 
     <div class="main-content">
-        <!-- Left Panel - Slide Editor -->
         <div class="input-section">
             <h2>📝 Create Your Science Slides</h2>
             <div id="slidesContainer"></div>
             
             <div class="controls">
                 <button class="btn btn-secondary" id="addSlideBtn">➕ Add New Slide</button>
-                <button class="btn btn-primary" id="generateBtn">🎓 Generate Science PowerPoint</button>
+                <button class="btn btn-primary" id="generateBtn">🎓 Generate PowerPoint (Large Images)</button>
             </div>
             <div class="controls" style="margin-top: 0.5rem;">
-                <button class="btn" id="loadBiologyBtn" style="background: #16a34a; color: white;">🧬 Load Biology Example</button>
-                <button class="btn" id="loadChemistryBtn" style="background: #7c3aed; color: white;">⚗️ Load Chemistry Example</button>
-                <button class="btn" id="loadPhysicsBtn" style="background: #dc2626; color: white;">⚡ Load Physics Example</button>
+                <button class="btn" id="loadExampleBtn" style="background: #3b82f6; color: white;">📚 Load Science Example</button>
             </div>
         </div>
 
-        <!-- Right Panel - Preview -->
         <div class="preview-section">
-            <h2>🔍 Slide Preview</h2>
+            <h2>🔍 Preview (Your Exact Text + Images)</h2>
             <div id="previewContainer">
                 <p style="color: #64748b; text-align: center; padding: 2rem;">
-                    Add slides and they will appear here
+                    Add slides and your exact text will appear here
                 </p>
             </div>
         </div>
     </div>
 
     <div id="statusMessage" class="status status-info">
-        💡 Enter your science content for each slide. Images will be automatically added from educational sources!
+        💡 Enter your exact text for each slide. The PowerPoint will preserve your formatting with large, prominent images!
     </div>
 </div>
 
@@ -356,66 +319,54 @@
     let slides = [];
     let slideIdCounter = 0;
 
-    // Science-specific image database (high-quality educational images)
+    // High-quality science image database (large, clear images)
     const scienceImages = {
-        // Biology
-        'cell': 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&h=450&fit=crop',
-        'dna': 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?w=800&h=450&fit=crop',
-        'microscope': 'https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=800&h=450&fit=crop',
-        'photosynthesis': 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=800&h=450&fit=crop',
-        'human body': 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=800&h=450&fit=crop',
-        'bacteria': 'https://images.unsplash.com/photo-1583912267694-b62f2d0c10a6?w=800&h=450&fit=crop',
-        
-        // Chemistry
-        'chemical': 'https://images.unsplash.com/photo-1532187643603-ba119ca4109e?w=800&h=450&fit=crop',
-        'molecule': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop',
-        'atom': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=450&fit=crop',
-        'lab': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop',
-        'experiment': 'https://images.unsplash.com/photo-1532187643603-ba119ca4109e?w=800&h=450&fit=crop',
-        
-        // Physics
-        'physics': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=450&fit=crop',
-        'energy': 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=800&h=450&fit=crop',
-        'magnet': 'https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=800&h=450&fit=crop',
-        'gravity': 'https://images.unsplash.com/photo-1536697246787-1f7ae568d89a?w=800&h=450&fit=crop',
-        'space': 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800&h=450&fit=crop',
-        
-        // General Science
-        'science': 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=450&fit=crop',
-        'education': 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=450&fit=crop',
-        'research': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop'
+        'cell': 'https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'dna': 'https://images.pexels.com/photos/2280545/pexels-photo-2280545.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'microscope': 'https://images.pexels.com/photos/5598312/pexels-photo-5598312.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'photosynthesis': 'https://images.pexels.com/photos/247852/pexels-photo-247852.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'human body': 'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'bacteria': 'https://images.pexels.com/photos/158463/pexels-photo-158463.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'chemical': 'https://images.pexels.com/photos/3793517/pexels-photo-3793517.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'molecule': 'https://images.pexels.com/photos/407176/pexels-photo-407176.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'atom': 'https://images.pexels.com/photos/258238/pexels-photo-258238.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'lab': 'https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'physics': 'https://images.pexels.com/photos/129703/pexels-photo-129703.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'energy': 'https://images.pexels.com/photos/414988/pexels-photo-414988.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'magnet': 'https://images.pexels.com/photos/355963/pexels-photo-355963.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'gravity': 'https://images.pexels.com/photos/220201/pexels-photo-220201.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'space': 'https://images.pexels.com/photos/2156/sky-earth-space-working.jpg?auto=compress&cs=tinysrgb&w=1200',
+        'science': 'https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'butterfly': 'https://images.pexels.com/photos/92425/pexels-photo-92425.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'frog': 'https://images.pexels.com/photos/290143/pexels-photo-290143.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        'ecosystem': 'https://images.pexels.com/photos/1191403/pexels-photo-1191403.jpeg?auto=compress&cs=tinysrgb&w=1200'
     };
 
-    // Smart image selection based on content
     function getScienceImage(title, content) {
         const text = (title + ' ' + content).toLowerCase();
         
-        // Biology keywords
-        if (text.includes('cell') || text.includes('biology') || text.includes('organism')) return scienceImages.cell;
-        if (text.includes('dna') || text.includes('gene') || text.includes('genetic')) return scienceImages.dna;
-        if (text.includes('microscope') || text.includes('microbe')) return scienceImages.microscope;
+        if (text.includes('cell') || text.includes('biology')) return scienceImages.cell;
+        if (text.includes('dna') || text.includes('gene')) return scienceImages.dna;
+        if (text.includes('microscope')) return scienceImages.microscope;
         if (text.includes('photosynthesis') || text.includes('plant')) return scienceImages.photosynthesis;
-        if (text.includes('human') || text.includes('body') || text.includes('anatomy')) return scienceImages['human body'];
+        if (text.includes('human') || text.includes('body') || text.includes('heart')) return scienceImages['human body'];
         if (text.includes('bacteria') || text.includes('virus')) return scienceImages.bacteria;
-        
-        // Chemistry keywords
         if (text.includes('chemical') || text.includes('reaction')) return scienceImages.chemical;
-        if (text.includes('molecule') || text.includes('compound')) return scienceImages.molecule;
-        if (text.includes('atom') || text.includes('element')) return scienceImages.atom;
+        if (text.includes('molecule')) return scienceImages.molecule;
+        if (text.includes('atom')) return scienceImages.atom;
         if (text.includes('lab') || text.includes('experiment')) return scienceImages.lab;
-        
-        // Physics keywords
         if (text.includes('physics') || text.includes('quantum')) return scienceImages.physics;
-        if (text.includes('energy') || text.includes('power')) return scienceImages.energy;
-        if (text.includes('magnet') || text.includes('magnetic')) return scienceImages.magnet;
-        if (text.includes('gravity') || text.includes('force')) return scienceImages.gravity;
-        if (text.includes('space') || text.includes('astronomy') || text.includes('planet')) return scienceImages.space;
+        if (text.includes('energy')) return scienceImages.energy;
+        if (text.includes('magnet')) return scienceImages.magnet;
+        if (text.includes('gravity')) return scienceImages.gravity;
+        if (text.includes('space') || text.includes('planet')) return scienceImages.space;
+        if (text.includes('butterfly')) return scienceImages.butterfly;
+        if (text.includes('frog')) return scienceImages.frog;
+        if (text.includes('ecosystem') || text.includes('environment')) return scienceImages.ecosystem;
         
-        // Default science image
         return scienceImages.science;
     }
 
-    // Render slide editor
     function renderSlideEditor() {
         const container = document.getElementById('slidesContainer');
         if (slides.length === 0) {
@@ -432,8 +383,8 @@
                         <button class="remove-slide" onclick="removeSlide(${slide.id})">🗑️ Remove</button>
                     </div>
                     <div class="slide-content">
-                        <input type="text" class="slide-title-input" placeholder="Slide Title (e.g., The Cell Structure)" value="${escapeHtml(slide.title)}" onchange="updateSlide(${slide.id}, 'title', this.value)">
-                        <textarea class="slide-text-input" placeholder="Enter your science content here. Include key facts, explanations, and teaching points..." onchange="updateSlide(${slide.id}, 'content', this.value)">${escapeHtml(slide.content)}</textarea>
+                        <input type="text" class="slide-title-input" placeholder="Slide Title" value="${escapeHtml(slide.title)}" onchange="updateSlide(${slide.id}, 'title', this.value)">
+                        <textarea class="slide-text-input" placeholder="Enter your exact text here. Everything you type will appear exactly in the PowerPoint slide..." onchange="updateSlide(${slide.id}, 'content', this.value)">${escapeHtml(slide.content)}</textarea>
                     </div>
                 </div>
             `;
@@ -442,7 +393,6 @@
         renderPreview();
     }
 
-    // Update slide data
     function updateSlide(id, field, value) {
         const slide = slides.find(s => s.id === id);
         if (slide) {
@@ -451,18 +401,16 @@
         }
     }
 
-    // Remove slide
     function removeSlide(id) {
         slides = slides.filter(s => s.id !== id);
         renderSlideEditor();
         updateStatus(`Slide removed. ${slides.length} slide(s) remaining.`, 'info');
     }
 
-    // Render preview
     function renderPreview() {
         const container = document.getElementById('previewContainer');
         if (slides.length === 0) {
-            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">No slides to preview. Add slides to see them here.</p>';
+            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">No slides to preview. Add slides to see your exact text here.</p>';
             return;
         }
         
@@ -474,7 +422,7 @@
                     <div class="slide-card-header">Slide ${index + 1}</div>
                     <div class="slide-card-body">
                         <div class="slide-card-title">${escapeHtml(slide.title || 'Untitled Slide')}</div>
-                        <div class="slide-card-text">${escapeHtml(slide.content.substring(0, 120))}${slide.content.length > 120 ? '...' : ''}</div>
+                        <div class="slide-card-text" style="white-space: pre-wrap;">${escapeHtml(slide.content || 'No content yet')}</div>
                         <img src="${imageUrl}" class="slide-card-image" alt="Science image" onerror="this.src='https://picsum.photos/id/20/800/450'">
                     </div>
                 </div>
@@ -496,27 +444,20 @@
         setTimeout(() => {
             if (document.getElementById('statusMessage').textContent === message) {
                 statusDiv.className = 'status status-info';
-                statusDiv.textContent = '💡 Enter your science content for each slide. Images will be automatically added from educational sources!';
+                statusDiv.textContent = '💡 Enter your exact text for each slide. The PowerPoint will preserve your formatting with large, prominent images!';
             }
         }, 4000);
     }
 
-    // Generate PowerPoint
     async function generatePowerPoint() {
         if (slides.length === 0) {
             updateStatus('Please add at least one slide first!', 'error');
             return;
         }
         
-        // Check for empty titles/content
-        const emptySlides = slides.filter(s => !s.title.trim() || !s.content.trim());
-        if (emptySlides.length > 0) {
-            updateStatus(`⚠️ ${emptySlides.length} slide(s) have missing title or content. Please fill them in.`, 'warning');
-        }
-        
         const generateBtn = document.getElementById('generateBtn');
         const originalText = generateBtn.innerHTML;
-        generateBtn.innerHTML = '<span class="loading"></span> Creating Science Presentation...';
+        generateBtn.innerHTML = '<span class="loading"></span> Creating PowerPoint with Large Images...';
         generateBtn.disabled = true;
         
         try {
@@ -526,47 +467,32 @@
             pptx.layout = 'LAYOUT_WIDE';
             pptx.author = 'Science Teacher';
             pptx.title = 'Science Presentation';
-            pptx.subject = 'Educational Science Content';
-            pptx.company = 'ScienceSlideMaker';
+            pptx.company = 'Science Teacher Pro';
             
             for (let i = 0; i < slides.length; i++) {
                 const slide = slides[i];
                 const imageUrl = getScienceImage(slide.title, slide.content);
                 const pptSlide = pptx.addSlide();
                 
-                // Science theme colors
-                const scienceColors = {
-                    biology: '#2e7d32',
-                    chemistry: '#7b1fa2',
-                    physics: '#c62828',
-                    default: '#1e3c72'
-                };
-                
-                let themeColor = scienceColors.default;
-                const text = (slide.title + ' ' + slide.content).toLowerCase();
-                if (text.includes('cell') || text.includes('dna') || text.includes('biology')) themeColor = scienceColors.biology;
-                else if (text.includes('chemical') || text.includes('molecule') || text.includes('atom')) themeColor = scienceColors.chemistry;
-                else if (text.includes('physics') || text.includes('energy') || text.includes('force')) themeColor = scienceColors.physics;
-                
-                // Add header
+                // Clean white background for better readability
                 pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
-                    x: 0, y: 0, w: '100%', h: 0.9,
-                    fill: { type: 'solid', color: themeColor }
+                    x: 0, y: 0, w: '100%', h: '100%',
+                    fill: { type: 'solid', color: 'FFFFFF' }
                 });
                 
-                // Add title
+                // Add a subtle header bar
+                pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
+                    x: 0, y: 0, w: '100%', h: 0.6,
+                    fill: { type: 'solid', color: '2A5298' }
+                });
+                
+                // Add title with large font
                 pptSlide.addText(slide.title || 'Science Lesson', {
-                    x: 0.5, y: 0.2, w: 9, h: 0.7,
-                    fontSize: 32, bold: true, color: 'FFFFFF'
+                    x: 0.5, y: 0.2, w: 9, h: 0.8,
+                    fontSize: 36, bold: true, color: '2A5298'
                 });
                 
-                // Add slide number
-                pptSlide.addText(`${i + 1} / ${slides.length}`, {
-                    x: 9, y: 5.2, w: 1, h: 0.3,
-                    fontSize: 11, color: '666666'
-                });
-                
-                // Add image
+                // Add LARGE IMAGE (taking up significant space)
                 try {
                     const response = await fetch(imageUrl);
                     if (response.ok) {
@@ -577,33 +503,91 @@
                             reader.readAsDataURL(blob);
                         });
                         
+                        // LARGE IMAGE - takes right side prominently
                         pptSlide.addImage({
                             data: base64,
-                            x: 5.8, y: 1.2, w: 3.7, h: 2.8,
-                            sizing: { type: 'contain', w: 3.7, h: 2.8 }
+                            x: 5.5, y: 1.2, w: 4.2, h: 3.5,
+                            sizing: { type: 'contain', w: 4.2, h: 3.5 }
+                        });
+                    } else {
+                        // Fallback shape if image fails
+                        pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
+                            x: 5.5, y: 1.2, w: 4.2, h: 3.5,
+                            fill: { type: 'solid', color: 'E2E8F0' }
+                        });
+                        pptSlide.addText('📷 Science Image', {
+                            x: 5.5, y: 2.5, w: 4.2, h: 0.5,
+                            fontSize: 14, color: '666666', align: 'center'
                         });
                     }
                 } catch(e) {
                     console.warn('Image load failed');
+                    pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
+                        x: 5.5, y: 1.2, w: 4.2, h: 3.5,
+                        fill: { type: 'solid', color: 'F1F5F9' }
+                    });
+                    pptSlide.addText('🔬 Science Visual', {
+                        x: 5.5, y: 2.5, w: 4.2, h: 0.5,
+                        fontSize: 14, color: '666666', align: 'center'
+                    });
                 }
                 
-                // Add content text
-                const paragraphs = slide.content.split('\n').filter(p => p.trim());
-                pptSlide.addText(paragraphs.map(p => ({ text: p, options: { bullet: true } })), {
-                    x: 0.5, y: 1.2, w: 5, h: 3.5,
-                    fontSize: 14, color: '2C3E50', lineSpacing: 28
+                // Add EXACT TEXT - preserving all formatting, line breaks, and content
+                // Split by newlines to preserve formatting
+                const lines = slide.content.split('\n');
+                let yPosition = 1.3;
+                
+                for (let line of lines) {
+                    if (line.trim()) {
+                        // Check if it's a bullet point (starts with • or - or number)
+                        if (line.trim().startsWith('•') || line.trim().startsWith('-') || /^\d+\./.test(line.trim())) {
+                            pptSlide.addText(line.trim(), {
+                                x: 0.5, y: yPosition, w: 4.8, h: 0.5,
+                                fontSize: 16, color: '1E293B', bullet: false
+                            });
+                        } else {
+                            pptSlide.addText(line.trim(), {
+                                x: 0.5, y: yPosition, w: 4.8, h: 0.5,
+                                fontSize: 16, color: '334155'
+                            });
+                        }
+                        yPosition += 0.45;
+                        
+                        // Prevent text from overlapping with image
+                        if (yPosition > 5.0) break;
+                    } else {
+                        yPosition += 0.2; // Add spacing for empty lines
+                    }
+                }
+                
+                // If no content, show placeholder
+                if (!slide.content.trim()) {
+                    pptSlide.addText('Enter your content here', {
+                        x: 0.5, y: 1.5, w: 4.8, h: 0.5,
+                        fontSize: 16, color: '94A3B8', italic: true
+                    });
+                }
+                
+                // Add slide number
+                pptSlide.addText(`${i + 1} / ${slides.length}`, {
+                    x: 9, y: 5.3, w: 1, h: 0.3,
+                    fontSize: 11, color: '94A3B8', align: 'right'
                 });
                 
-                // Add footer
-                pptSlide.addText('ScienceSlideMaker · Educational Resource', {
-                    x: 0, y: 5.5, w: '100%', h: 0.3,
-                    fontSize: 9, color: 'AAAAAA', align: 'center'
+                // Add educational footer
+                pptSlide.addShape(pptx.ShapeType.RECTANGLE, {
+                    x: 0, y: 5.6, w: '100%', h: 0.02,
+                    fill: { type: 'solid', color: 'CBD5E1' }
+                });
+                pptSlide.addText('Science Teacher Pro · Educational Resource', {
+                    x: 0, y: 5.65, w: '100%', h: 0.25,
+                    fontSize: 9, color: '94A3B8', align: 'center'
                 });
             }
             
             const fileName = `Science_Presentation_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.pptx`;
             await pptx.writeFile({ fileName });
-            updateStatus(`✅ Success! "${fileName}" created with ${slides.length} science slides and educational images!`, 'success');
+            updateStatus(`✅ Success! "${fileName}" created with ${slides.length} slides. Your exact text is preserved with large images!`, 'success');
             
         } catch (error) {
             console.error(error);
@@ -614,7 +598,6 @@
         }
     }
     
-    // Add new slide
     function addSlide() {
         slides.push({
             id: slideIdCounter++,
@@ -622,55 +605,43 @@
             content: ''
         });
         renderSlideEditor();
-        updateStatus('New slide added! Enter your science content.', 'info');
+        updateStatus('New slide added! Enter your exact text.', 'info');
     }
     
-    // Load examples
-    function loadBiologyExample() {
+    function loadExample() {
         slides = [
-            { id: slideIdCounter++, title: 'The Structure of a Cell', content: 'Cells are the basic building blocks of all living things.\n\n• Nucleus: Contains DNA and controls cell activities\n• Mitochondria: Powerhouse of the cell, produces energy\n• Cell Membrane: Controls what enters and exits\n• Cytoplasm: Jelly-like substance where reactions occur' },
-            { id: slideIdCounter++, title: 'Photosynthesis', content: 'Plants convert sunlight into energy through photosynthesis.\n\nEquation: 6CO₂ + 6H₂O + Light → C₆H₁₂O₆ + 6O₂\n\nFactors affecting rate:\n• Light intensity\n• Carbon dioxide concentration\n• Temperature' },
-            { id: slideIdCounter++, title: 'The Human Digestive System', content: 'The digestive system breaks down food for absorption.\n\nOrgans involved:\n1. Mouth - mechanical and chemical digestion\n2. Stomach - protein digestion begins\n3. Small intestine - nutrient absorption\n4. Large intestine - water absorption' },
-            { id: slideIdCounter++, title: 'DNA Structure', content: 'DNA contains genetic instructions for all living organisms.\n\nKey features:\n• Double helix structure\n• Nucleotides: A, T, C, G\n• Base pairing rules: A-T, C-G\n• Genes code for proteins' }
+            { 
+                id: slideIdCounter++, 
+                title: 'The Life Cycle of a Butterfly', 
+                content: 'Butterflies go through four stages of metamorphosis:\n\n• Egg Stage: Female butterflies lay eggs on leaves\n• Larva Stage (Caterpillar): Eats leaves and grows rapidly\n• Pupa Stage (Chrysalis): Transformation occurs inside\n• Adult Stage: Beautiful butterfly emerges and flies\n\nThis complete cycle takes about 30 days from egg to adult.' 
+            },
+            { 
+                id: slideIdCounter++, 
+                title: 'The Water Cycle', 
+                content: 'Water constantly moves through Earth\'s systems:\n\n1. Evaporation: Sun heats water, turning it into vapor\n2. Condensation: Water vapor cools and forms clouds\n3. Precipitation: Water falls as rain, snow, or hail\n4. Collection: Water gathers in oceans, lakes, and rivers\n\nThis cycle repeats continuously and is essential for all life.' 
+            },
+            { 
+                id: slideIdCounter++, 
+                title: 'Frog Life Cycle', 
+                content: 'Amphibians like frogs undergo amazing changes:\n\nEgg Stage: Frog eggs are laid in water in clusters\nTadpole Stage: Hatches with gills and a tail\nTadpole with Legs: Hind legs develop first\nFroglet: Lungs develop, tail shrinks\nAdult Frog: Fully developed, lives on land and water\n\nThis process is called metamorphosis.' 
+            },
+            { 
+                id: slideIdCounter++, 
+                title: 'Ecosystem Relationships', 
+                content: 'Living things interact in ecosystems:\n\n• Producers: Plants make their own food through photosynthesis\n• Consumers: Animals eat plants or other animals\n• Decomposers: Break down dead matter\n\nFood Chain Example:\nSun → Grass → Grasshopper → Frog → Snake → Hawk\n\nEnergy flows from one organism to another in this chain.' 
+            }
         ];
         renderSlideEditor();
-        updateStatus('Biology example loaded! 4 slides about cells, photosynthesis, digestion, and DNA.', 'success');
+        updateStatus('Science example loaded! 4 slides with complete content. Your exact text will be preserved in PowerPoint with large images.', 'success');
     }
     
-    function loadChemistryExample() {
-        slides = [
-            { id: slideIdCounter++, title: 'The Periodic Table', content: 'The periodic table organizes elements by atomic number.\n\nGroups (vertical): Similar properties\nPeriods (horizontal): Same energy levels\n\nKey groups:\n• Alkali metals (Group 1): Highly reactive\n• Halogens (Group 17): Reactive nonmetals\n• Noble gases (Group 18): Inert gases' },
-            { id: slideIdCounter++, title: 'Chemical Reactions', content: 'Chemical reactions involve breaking and forming bonds.\n\nTypes of reactions:\n• Synthesis: A + B → AB\n• Decomposition: AB → A + B\n• Single replacement: A + BC → AC + B\n• Combustion: Fuel + O₂ → CO₂ + H₂O' },
-            { id: slideIdCounter++, title: 'Atomic Structure', content: 'Atoms consist of protons, neutrons, and electrons.\n\n• Protons: Positive charge, in nucleus\n• Neutrons: Neutral, in nucleus\n• Electrons: Negative charge, orbit nucleus\n\nAtomic number = number of protons\nMass number = protons + neutrons' },
-            { id: slideIdCounter++, title: 'States of Matter', content: 'Matter exists in three main states.\n\nSolid: Fixed shape, particles tightly packed\nLiquid: Takes shape of container, particles flow\nGas: Fills container, particles move freely\n\nChanges of state:\nMelting, freezing, evaporation, condensation' }
-        ];
-        renderSlideEditor();
-        updateStatus('Chemistry example loaded! 4 slides about periodic table, reactions, atoms, and states of matter.', 'success');
-    }
-    
-    function loadPhysicsExample() {
-        slides = [
-            { id: slideIdCounter++, title: 'Newton\'s Laws of Motion', content: 'Sir Isaac Newton described how objects move.\n\nFirst Law (Inertia): Objects stay at rest or motion unless acted upon.\n\nSecond Law (F = ma): Force = mass × acceleration\n\nThird Law: For every action, there is an equal and opposite reaction.' },
-            { id: slideIdCounter++, title: 'Energy Types and Transformations', content: 'Energy cannot be created or destroyed, only transformed.\n\nTypes of energy:\n• Kinetic: Energy of motion\n• Potential: Stored energy\n• Thermal: Heat energy\n• Chemical: Stored in bonds\n\nLaw of Conservation of Energy' },
-            { id: slideIdCounter++, title: 'Electricity and Circuits', content: 'Electricity flows through circuits.\n\nKey concepts:\n• Voltage (V): Electrical pressure\n• Current (I): Flow of electrons\n• Resistance (R): Opposition to flow\n\nOhm\'s Law: V = I × R' },
-            { id: slideIdCounter++, title: 'Waves and Sound', content: 'Waves transfer energy without transferring matter.\n\nWave properties:\n• Wavelength: Distance between peaks\n• Frequency: Waves per second\n• Amplitude: Wave height\n\nSpeed = frequency × wavelength' }
-        ];
-        renderSlideEditor();
-        updateStatus('Physics example loaded! 4 slides about motion, energy, electricity, and waves.', 'success');
-    }
-    
-    // Event listeners
     document.getElementById('addSlideBtn').addEventListener('click', addSlide);
     document.getElementById('generateBtn').addEventListener('click', generatePowerPoint);
-    document.getElementById('loadBiologyBtn').addEventListener('click', loadBiologyExample);
-    document.getElementById('loadChemistryBtn').addEventListener('click', loadChemistryExample);
-    document.getElementById('loadPhysicsBtn').addEventListener('click', loadPhysicsExample);
+    document.getElementById('loadExampleBtn').addEventListener('click', loadExample);
     
-    // Make functions global for onclick
     window.removeSlide = removeSlide;
     window.updateSlide = updateSlide;
     
-    // Initialize with one empty slide
     addSlide();
 </script>
 </body>
