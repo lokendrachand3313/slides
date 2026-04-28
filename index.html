@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Molecular Lab Reservation System - Enhanced</title>
+    <title>Molecular Lab Reservation System - Colorful Calendar</title>
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <style>
@@ -125,11 +125,14 @@
         }
 
         .room-card h3 {
-            color: #667eea;
             margin-bottom: 15px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid;
             padding-bottom: 10px;
         }
+
+        .dna-card h3 { color: #3498db; border-bottom-color: #3498db; }
+        .pcr-card h3 { color: #2ecc71; border-bottom-color: #2ecc71; }
+        .gel-card h3 { color: #e67e22; border-bottom-color: #e67e22; }
 
         .form-group {
             margin-bottom: 15px;
@@ -156,23 +159,27 @@
         }
 
         button {
-            background: #667eea;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            transition: background 0.3s;
+            transition: transform 0.2s;
         }
 
         button:hover {
-            background: #5a67d8;
+            transform: translateY(-2px);
         }
+
+        .dna-btn { background: #3498db; }
+        .pcr-btn { background: #2ecc71; }
+        .gel-btn { background: #e67e22; }
 
         button:disabled {
             background: #ccc;
             cursor: not-allowed;
+            transform: none;
         }
 
         /* Reservations List */
@@ -184,12 +191,15 @@
         }
 
         .reservation-item {
-            border-left: 4px solid #667eea;
             padding: 15px;
             margin-bottom: 10px;
-            background: #f9f9f9;
             border-radius: 5px;
+            border-left: 4px solid;
         }
+
+        .dna-reservation { background: #e3f2fd; border-left-color: #3498db; }
+        .pcr-reservation { background: #e8f5e9; border-left-color: #2ecc71; }
+        .gel-reservation { background: #fff3e0; border-left-color: #e67e22; }
 
         /* Calendar Container */
         .calendar-container {
@@ -199,9 +209,54 @@
             margin-top: 20px;
         }
 
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .color-legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .time-slots {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .time-slot-btn {
+            padding: 5px 10px;
+            background: #f0f0f0;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .time-slot-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
         #calendar {
-            max-height: 500px;
-            overflow-y: auto;
+            min-height: 600px;
         }
 
         /* Discussion Area */
@@ -256,6 +311,9 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            .calendar-header {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -289,7 +347,7 @@
         <div id="reservationsTab">
             <div class="room-grid">
                 <!-- Room 1: DNA Extraction -->
-                <div class="room-card">
+                <div class="room-card dna-card">
                     <h3>🧬 DNA Extraction & Pre-PCR</h3>
                     <form id="dnaExtractionForm">
                         <div class="form-group">
@@ -321,12 +379,12 @@
                             <label>TE Buffer (μL)</label>
                             <input type="number" required id="teBuffer" step="0.1">
                         </div>
-                        <button type="submit">Reserve DNA Extraction Room</button>
+                        <button type="submit" class="dna-btn">Reserve DNA Extraction Room</button>
                     </form>
                 </div>
 
                 <!-- Room 2: PCR Room -->
-                <div class="room-card">
+                <div class="room-card pcr-card">
                     <h3>🧪 PCR Room (Thermal Cyclers)</h3>
                     <form id="pcrForm">
                         <div class="form-group">
@@ -386,12 +444,12 @@
                             <label>ddH₂O (μL)</label>
                             <input type="number" required step="0.1" id="ddh2o">
                         </div>
-                        <button type="submit">Reserve PCR Room</button>
+                        <button type="submit" class="pcr-btn">Reserve PCR Room</button>
                     </form>
                 </div>
 
                 <!-- Room 3: Gel Electrophoresis -->
-                <div class="room-card">
+                <div class="room-card gel-card">
                     <h3>🔬 Gel Electrophoresis & Sequencing Prep</h3>
                     <form id="gelForm">
                         <div class="form-group">
@@ -419,13 +477,41 @@
                             <label>Additional Notes</label>
                             <textarea id="gelNotes" placeholder="Any additional requirements..."></textarea>
                         </div>
-                        <button type="submit">Reserve Gel Room</button>
+                        <button type="submit" class="gel-btn">Reserve Gel Room</button>
                     </form>
                 </div>
             </div>
 
             <div class="calendar-container">
-                <h3>📅 Reservation Calendar</h3>
+                <div class="calendar-header">
+                    <h3>📅 Color-Coded Reservation Calendar</h3>
+                    <div class="color-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #3498db;"></div>
+                            <span>DNA Extraction</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2ecc71;"></div>
+                            <span>PCR Room</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #e67e22;"></div>
+                            <span>Gel Electrophoresis</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #9b59b6;"></div>
+                            <span>Morning (6AM-12PM)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f39c12;"></div>
+                            <span>Afternoon (12PM-5PM)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #e74c3c;"></div>
+                            <span>Evening (5PM-10PM)</span>
+                        </div>
+                    </div>
+                </div>
                 <div id="calendar"></div>
             </div>
 
@@ -505,6 +591,20 @@
                     calendar = null;
                 }
             }
+        }
+
+        function getTimeColor(startTime) {
+            const hour = new Date(startTime).getHours();
+            if (hour < 12) return '#9b59b6'; // Morning
+            if (hour < 17) return '#f39c12'; // Afternoon
+            return '#e74c3c'; // Evening
+        }
+
+        function getRoomColor(room, type) {
+            if (type === 'dna_extraction' || room.includes('DNA')) return '#3498db';
+            if (type === 'pcr' || room.includes('PCR')) return '#2ecc71';
+            if (type === 'gel' || room.includes('Gel')) return '#e67e22';
+            return '#95a5a6';
         }
 
         function showTab(tabName) {
@@ -587,6 +687,7 @@
             localStorage.setItem('reservations', JSON.stringify(reservations));
             alert("Reservation successful!");
             e.target.reset();
+            document.getElementById('dnaDate').value = new Date().toISOString().split('T')[0];
             displayReservations();
             if (calendar) calendar.refetchEvents();
         });
@@ -642,6 +743,7 @@
             localStorage.setItem('reservations', JSON.stringify(reservations));
             alert("Reservation successful!");
             e.target.reset();
+            document.getElementById('pcrDate').value = new Date().toISOString().split('T')[0];
             displayReservations();
             if (calendar) calendar.refetchEvents();
         });
@@ -684,6 +786,7 @@
             localStorage.setItem('reservations', JSON.stringify(reservations));
             alert("Reservation successful!");
             e.target.reset();
+            document.getElementById('gelDate').value = new Date().toISOString().split('T')[0];
             displayReservations();
             if (calendar) calendar.refetchEvents();
         });
@@ -704,21 +807,64 @@
                 slotMinTime: '06:00:00',
                 slotMaxTime: '22:00:00',
                 allDaySlot: false,
-                events: reservations.map(res => ({
-                    title: `${res.user.split('@')[0]} - ${res.room}`,
-                    start: res.startDateTime,
-                    end: res.endDateTime,
-                    backgroundColor: res.type === 'dna_extraction' ? '#667eea' : 
-                                   (res.type === 'pcr' ? '#48bb78' : '#ed8936'),
-                    borderColor: 'white',
-                    extendedProps: {
-                        room: res.room,
-                        user: res.user,
-                        type: res.type
-                    }
-                })),
+                slotDuration: '00:30:00',
+                slotLabelInterval: '01:00:00',
+                nowIndicator: true,
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                events: reservations.map(res => {
+                    const roomColor = getRoomColor(res.room, res.type);
+                    const timeColor = getTimeColor(res.startDateTime);
+                    
+                    return {
+                        title: `${res.user.split('@')[0]} - ${res.room.split(' - ')[0]}`,
+                        start: res.startDateTime,
+                        end: res.endDateTime,
+                        backgroundColor: roomColor,
+                        borderColor: timeColor,
+                        textColor: 'white',
+                        borderWidth: '3px',
+                        extendedProps: {
+                            room: res.room,
+                            user: res.user,
+                            type: res.type,
+                            duration: res.duration,
+                            details: res
+                        }
+                    };
+                }),
                 eventClick: function(info) {
-                    alert(`Reservation Details:\nRoom: ${info.event.extendedProps.room}\nUser: ${info.event.extendedProps.user}\nStart: ${info.event.start.toLocaleString()}\nEnd: ${info.event.end.toLocaleString()}`);
+                    const details = info.event.extendedProps.details;
+                    let detailsText = `Reservation Details:\n`;
+                    detailsText += `Room: ${details.room}\n`;
+                    detailsText += `User: ${details.user}\n`;
+                    detailsText += `Date: ${new Date(details.startDateTime).toLocaleDateString()}\n`;
+                    detailsText += `Time: ${new Date(details.startDateTime).toLocaleTimeString()} - ${new Date(details.endDateTime).toLocaleTimeString()}\n`;
+                    detailsText += `Duration: ${details.duration} hours\n`;
+                    
+                    if (details.type === 'dna_extraction') {
+                        detailsText += `Samples: ${details.samples}\n`;
+                        detailsText += `Chilex: ${details.chilex}μL\n`;
+                        detailsText += `Proteinase K: ${details.proteinaseK}μL\n`;
+                        detailsText += `TE Buffer: ${details.teBuffer}μL`;
+                    } else if (details.type === 'pcr') {
+                        detailsText += `Thermal Cycler: ${details.thermalCycler}\n`;
+                        detailsText += `Polymerase: ${details.polymeraseType}\n`;
+                        detailsText += `Primer: ${details.primer}\n`;
+                        detailsText += `ddH₂O: ${details.ddh2o}μL`;
+                    } else if (details.type === 'gel') {
+                        detailsText += `Purpose: ${details.purpose}\n`;
+                        detailsText += `Notes: ${details.notes || 'None'}`;
+                    }
+                    
+                    alert(detailsText);
+                },
+                eventDidMount: function(info) {
+                    // Add tooltip
+                    info.el.title = `${info.event.title}\nDuration: ${info.event.extendedProps.duration} hours`;
                 }
             });
             calendar.render();
@@ -735,18 +881,25 @@
                 return;
             }
             
-            container.innerHTML = futureReservations.map(res => `
-                <div class="reservation-item">
-                    <strong>${res.room}</strong><br>
-                    Date: ${new Date(res.startDateTime).toLocaleDateString()}<br>
-                    Time: ${new Date(res.startDateTime).toLocaleTimeString()} - ${new Date(res.endDateTime).toLocaleTimeString()}<br>
-                    Duration: ${res.duration} hours<br>
-                    User: ${res.user}<br>
-                    ${res.type === 'dna_extraction' ? `Samples: ${res.samples} | Chilex: ${res.chilex}μL | Proteinase K: ${res.proteinaseK}μL | TE: ${res.teBuffer}μL` : ''}
-                    ${res.type === 'pcr' ? `Cycler: ${res.thermalCycler} | Polymerase: ${res.polymeraseType} | Primer: ${res.primer}` : ''}
-                    ${res.type === 'gel' ? `Purpose: ${res.purpose}` : ''}
-                </div>
-            `).join('');
+            container.innerHTML = futureReservations.map(res => {
+                let colorClass = '';
+                if (res.type === 'dna_extraction') colorClass = 'dna-reservation';
+                else if (res.type === 'pcr') colorClass = 'pcr-reservation';
+                else if (res.type === 'gel') colorClass = 'gel-reservation';
+                
+                return `
+                    <div class="reservation-item ${colorClass}">
+                        <strong>${res.room}</strong><br>
+                        📅 ${new Date(res.startDateTime).toLocaleDateString()}<br>
+                        ⏰ ${new Date(res.startDateTime).toLocaleTimeString()} - ${new Date(res.endDateTime).toLocaleTimeString()}<br>
+                        ⏱️ Duration: ${res.duration} hours<br>
+                        👤 User: ${res.user}<br>
+                        ${res.type === 'dna_extraction' ? `🧬 Samples: ${res.samples} | Chilex: ${res.chilex}μL | Proteinase K: ${res.proteinaseK}μL | TE: ${res.teBuffer}μL` : ''}
+                        ${res.type === 'pcr' ? `🧪 Cycler: ${res.thermalCycler} | Polymerase: ${res.polymeraseType} | Primer: ${res.primer} | ddH₂O: ${res.ddh2o}μL` : ''}
+                        ${res.type === 'gel' ? `🎯 Purpose: ${res.purpose}${res.notes ? ` | Notes: ${res.notes}` : ''}` : ''}
+                    </div>
+                `;
+            }).join('');
         }
 
         function displayMyReservations() {
@@ -759,16 +912,23 @@
                 return;
             }
             
-            container.innerHTML = myReservations.map(res => `
-                <div class="reservation-item">
-                    <strong>${res.room}</strong><br>
-                    Date: ${new Date(res.startDateTime).toLocaleDateString()}<br>
-                    Time: ${new Date(res.startDateTime).toLocaleTimeString()} - ${new Date(res.endDateTime).toLocaleTimeString()}<br>
-                    Duration: ${res.duration} hours<br>
-                    Status: ${new Date(res.endDateTime) > new Date() ? 'Upcoming' : 'Completed'}<br>
-                    <button onclick="cancelReservation(${res.id})">Cancel</button>
-                </div>
-            `).join('');
+            container.innerHTML = myReservations.map(res => {
+                let colorClass = '';
+                if (res.type === 'dna_extraction') colorClass = 'dna-reservation';
+                else if (res.type === 'pcr') colorClass = 'pcr-reservation';
+                else if (res.type === 'gel') colorClass = 'gel-reservation';
+                
+                return `
+                    <div class="reservation-item ${colorClass}">
+                        <strong>${res.room}</strong><br>
+                        📅 ${new Date(res.startDateTime).toLocaleDateString()}<br>
+                        ⏰ ${new Date(res.startDateTime).toLocaleTimeString()} - ${new Date(res.endDateTime).toLocaleTimeString()}<br>
+                        ⏱️ Duration: ${res.duration} hours<br>
+                        Status: ${new Date(res.endDateTime) > new Date() ? '🟢 Upcoming' : '✅ Completed'}<br>
+                        <button onclick="cancelReservation(${res.id})">❌ Cancel Reservation</button>
+                    </div>
+                `;
+            }).join('');
         }
 
         function cancelReservation(id) {
@@ -839,11 +999,11 @@
                     <div class="post-content">${post.content || ''}</div>
                     ${post.image ? `<img src="${post.image}" class="post-image" alt="Uploaded result">` : ''}
                     <div style="margin-top: 10px;">
-                        <button onclick="addComment(${post.id})">Comment</button>
+                        <button onclick="addComment(${post.id})">💬 Comment</button>
                     </div>
                     <div id="comments-${post.id}" style="margin-top: 10px; padding-left: 20px;">
                         ${post.comments.map(c => `
-                            <div style="margin-top: 5px; font-size: 12px;">
+                            <div style="margin-top: 5px; font-size: 12px; padding: 5px; background: #f9f9f9; border-radius: 5px;">
                                 <strong>${c.user}:</strong> ${c.text}
                             </div>
                         `).join('')}
@@ -874,14 +1034,13 @@
         }
 
         // Initial setup
-        displayReservations();
-        document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = true);
-        
-        // Set default date to today
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('dnaDate').value = today;
         document.getElementById('pcrDate').value = today;
         document.getElementById('gelDate').value = today;
+        
+        displayReservations();
+        document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = true);
     </script>
 </body>
 </html>
