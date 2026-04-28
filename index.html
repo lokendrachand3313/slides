@@ -2,610 +2,732 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>AI Passport Studio | Coat & Tie, Background Remover, Passport Size</title>
-    <!-- HTML2CANVAS for rendering and download -->
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <!-- TensorFlow.js + BodyPix for background removal (client-side AI) -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0/dist/body-pix.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Molecular Lab Reservation System</title>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
 
         body {
-            background: linear-gradient(145deg, #e0eaf4 0%, #cfdef3 100%);
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            margin: 0;
-            padding: 24px;
+            color: #333;
         }
 
-        /* main card */
-        .card {
-            max-width: 1300px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(2px);
-            border-radius: 48px;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35);
-            overflow: hidden;
-            padding: 28px 32px 40px;
-            transition: all 0.2s ease;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1E3C72, #2A5298);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin: 0 0 6px 0;
-            letter-spacing: -0.3px;
-        }
-
-        .sub {
-            color: #4a5b6e;
-            border-left: 4px solid #2a6f97;
-            padding-left: 14px;
-            margin-bottom: 28px;
-            font-weight: 500;
-        }
-
-        .two-columns {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 28px;
-        }
-
-        .editor-panel {
-            flex: 1.2;
-            min-width: 260px;
-        }
-
-        .preview-panel {
-            flex: 1;
-            min-width: 280px;
-            background: #f8fafd;
-            border-radius: 36px;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 20px;
-            box-shadow: inset 0 1px 4px #0001, 0 8px 20px rgba(0, 0, 0, 0.05);
         }
 
-        .upload-area {
-            background: #f1f5f9;
-            border-radius: 32px;
-            padding: 24px;
-            text-align: center;
-            border: 2px dashed #9aaebf;
-            transition: all 0.2s;
-            cursor: pointer;
-            margin-bottom: 24px;
-        }
-
-        .upload-area:hover {
-            background: #e9f0f5;
-            border-color: #2a6f97;
-        }
-
-        .btn-group {
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 20px 0 24px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .google-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+
+        .google-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Cards */
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .room-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .room-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
         }
 
         button {
-            background: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #cddfe7;
-        }
-
-        button.primary {
-            background: #1e466e;
+            background: #667eea;
             color: white;
             border: none;
-            box-shadow: 0 8px 16px -8px #1e466e50;
-        }
-
-        button.primary:hover {
-            background: #0f2e4a;
-            transform: scale(0.97);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
         }
 
         button:hover {
-            background: #eef3fc;
-            transform: translateY(-1px);
+            background: #5a67d8;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 12px;
-        }
-
-        .canvas-wrapper {
-            background: #eef2f7;
-            border-radius: 28px;
-            padding: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        #resultCanvas {
-            max-width: 100%;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            background: #fff;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .size-badge {
-            margin-top: 12px;
-            font-size: 0.75rem;
-            background: #d9e3ec;
-            padding: 4px 12px;
-            border-radius: 30px;
-            display: inline-block;
-        }
-
-        .note {
-            font-size: 0.75rem;
-            color: #4a627a;
-            margin-top: 20px;
-            text-align: center;
-            background: #eef3fc;
-            padding: 12px;
-            border-radius: 28px;
-        }
-
-        @media (max-width: 780px) {
-            .card {
-                padding: 20px;
-            }
-            .two-columns {
-                flex-direction: column;
-            }
-        }
-        .status-text {
-            font-size: 0.8rem;
-            color: #2c6e9e;
-            margin-top: 12px;
-            font-weight: 500;
-        }
-        select {
-            padding: 8px 12px;
-            border-radius: 40px;
-            border: 1px solid #bbd0dd;
+        /* Reservations List */
+        .reservations-list {
             background: white;
-            font-weight: 500;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
         }
-        .flex-row {
+
+        .reservation-item {
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        /* Discussion Area */
+        .discussion-area {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .post {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-user {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .post-time {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .post-image {
+            max-width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .room-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="card">
-    <h1>📸 Passport Studio Pro</h1>
-    <div class="sub">✨ Remove background · Add Coat & Tie · Passport size (2x2 inch) · Ready to print</div>
-
-    <div class="two-columns">
-        <!-- Left: controls -->
-        <div class="editor-panel">
-            <div class="upload-area" id="uploadTrigger">
-                📂 Click or Drag & Drop Photo
-                <input type="file" id="photoInput" accept="image/jpeg, image/png, image/jpg" style="display: none">
-                <div style="font-size: 13px; margin-top: 8px;">JPG / PNG, best with clear face</div>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <h1>🔬 Molecular Lab Reservation System</h1>
+                <p>DNA Extraction | PCR | Gel Electrophoresis | Discussion</p>
             </div>
-
-            <div class="btn-group">
-                <button id="removeBgBtn" class="primary">🧹 Remove Background (AI)</button>
-                <button id="addCoatBtn">👔 Add Coat & Tie</button>
-            </div>
-
-            <div class="flex-row" style="margin-bottom: 18px;">
-                <span style="font-weight: 500;">🎨 Background color: </span>
-                <select id="bgColorSelect">
-                    <option value="#FFFFFF">White (Passport standard)</option>
-                    <option value="#E9F0FF">Light Blue</option>
-                    <option value="#F0F0F0">Off White</option>
-                    <option value="#FFE4E1">Soft Pink</option>
-                </select>
-            </div>
-
-            <div class="action-buttons">
-                <button id="makePassportBtn" class="primary">🖼️ Make Passport Size (2x2 inch @300DPI)</button>
-                <button id="downloadBtn">⬇️ Download Printable Image</button>
-            </div>
-            <div class="status-text" id="statusMsg">✅ Ready. Upload a photo, then remove background + add coat & tie.</div>
-            <div class="note">
-                ⚡ How it works: <strong>1. Upload</strong> → <strong>2. Remove Background</strong> (BodyPix AI) → <strong>3. Add Coat & Tie</strong> (overlay graphic) → <strong>4. Passport Size + Custom BG</strong> → <strong>5. Download & Print</strong><br>
-                *Coat & tie is a semi-transparent overlay (smart placement on shoulders). For perfect formal look, ensure face is visible.
+            <div class="user-info" id="userInfo">
+                <div id="loginSection">
+                    <button class="google-btn" onclick="handleGoogleLogin()">
+                        Sign in with Google
+                    </button>
+                </div>
+                <div id="userProfile" style="display: none;">
+                    <span id="userName"></span>
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <button onclick="handleLogout()">Logout</button>
+                </div>
             </div>
         </div>
 
-        <!-- Right: preview -->
-        <div class="preview-panel">
-            <div class="canvas-wrapper">
-                <canvas id="resultCanvas" width="600" height="700" style="width:100%; height:auto; max-width:350px; background:#eef2f7;"></canvas>
-                <div class="size-badge" id="dimensionBadge">📏 Preview: original ratio</div>
+        <div class="nav-tabs">
+            <button class="tab active" onclick="showTab('reservations')">Reservations</button>
+            <button class="tab" onclick="showTab('discussion')">Discussion & Results</button>
+            <button class="tab" onclick="showTab('myReservations')">My Reservations</button>
+        </div>
+
+        <div id="reservationsTab">
+            <div class="room-grid">
+                <!-- Room 1: DNA Extraction -->
+                <div class="room-card">
+                    <h3>🧬 DNA Extraction & Pre-PCR</h3>
+                    <form id="dnaExtractionForm">
+                        <div class="form-group">
+                            <label>Date & Time</label>
+                            <input type="datetime-local" required id="dnaDateTime">
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Samples</label>
+                            <input type="number" required id="sampleCount" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Chilex (μL)</label>
+                            <input type="number" required id="chilex" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Proteinase K (μL)</label>
+                            <input type="number" required id="proteinaseK" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>TE Buffer (μL)</label>
+                            <input type="number" required id="teBuffer" step="0.1">
+                        </div>
+                        <button type="submit">Reserve DNA Extraction Room</button>
+                    </form>
+                </div>
+
+                <!-- Room 2: PCR Room -->
+                <div class="room-card">
+                    <h3>🧪 PCR Room (Thermal Cyclers)</h3>
+                    <form id="pcrForm">
+                        <div class="form-group">
+                            <label>Date & Time</label>
+                            <input type="datetime-local" required id="pcrDateTime">
+                        </div>
+                        <div class="form-group">
+                            <label>Thermal Cycler</label>
+                            <select required id="thermalCycler">
+                                <option value="Cycler #1">Cycler #1</option>
+                                <option value="Cycler #2">Cycler #2</option>
+                                <option value="Cycler #3">Cycler #3</option>
+                                <option value="Personal Cycler">Personal Cycler</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Polymerase Type</label>
+                            <select required id="polymeraseType" onchange="togglePolymeraseFields()">
+                                <option value="KOD ONE">KOD ONE Master Mix</option>
+                                <option value="KOD FX NEO">KOD FX NEO</option>
+                            </select>
+                        </div>
+                        <div id="kodOneFields">
+                            <div class="form-group">
+                                <label>KOD ONE Master Mix (μL)</label>
+                                <input type="number" step="0.1" id="kodOneMix">
+                            </div>
+                        </div>
+                        <div id="kodFxNeoFields" style="display: none;">
+                            <div class="form-group">
+                                <label>KOD FX (μL)</label>
+                                <input type="number" step="0.1" id="kodFx">
+                            </div>
+                            <div class="form-group">
+                                <label>dNTP (μL)</label>
+                                <input type="number" step="0.1" id="dntp">
+                            </div>
+                            <div class="form-group">
+                                <label>2X Buffer (μL)</label>
+                                <input type="number" step="0.1" id="buffer2x">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Primer (μL)</label>
+                            <input type="text" required id="primer" placeholder="e.g., Forward/Reverse primer amount">
+                        </div>
+                        <div class="form-group">
+                            <label>ddH₂O (μL)</label>
+                            <input type="number" required step="0.1" id="ddh2o">
+                        </div>
+                        <button type="submit">Reserve PCR Room</button>
+                    </form>
+                </div>
+
+                <!-- Room 3: Gel Electrophoresis -->
+                <div class="room-card">
+                    <h3>🔬 Gel Electrophoresis & Sequencing Prep</h3>
+                    <form id="gelForm">
+                        <div class="form-group">
+                            <label>Date & Time</label>
+                            <input type="datetime-local" required id="gelDateTime">
+                        </div>
+                        <div class="form-group">
+                            <label>Purpose</label>
+                            <select required id="gelPurpose">
+                                <option value="gel_electrophoresis">Gel Electrophoresis</option>
+                                <option value="sequencing_prep">Sequencing Preparation</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Additional Notes</label>
+                            <textarea id="gelNotes" placeholder="Any additional requirements..."></textarea>
+                        </div>
+                        <button type="submit">Reserve Gel Room</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="reservations-list">
+                <h3>📅 Today's Reservations</h3>
+                <div id="reservationsList"></div>
+            </div>
+        </div>
+
+        <div id="discussionTab" style="display: none;">
+            <div class="discussion-area">
+                <h3>💬 Lab Discussion & Results Sharing</h3>
+                <div class="form-group">
+                    <textarea id="postContent" placeholder="Share your thoughts, results, or questions..." rows="3"></textarea>
+                    <div class="form-group">
+                        <input type="file" id="postImage" accept="image/*">
+                    </div>
+                    <button onclick="createPost()">Post</button>
+                </div>
+                <div id="postsList"></div>
+            </div>
+        </div>
+
+        <div id="myReservationsTab" style="display: none;">
+            <div class="reservations-list">
+                <h3>📋 My Reservations</h3>
+                <div id="myReservationsList"></div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    // ------------------- GLOBALS -------------------
-    let originalImage = null;        // HTMLImageElement original uploaded
-    let currentProcessedImage = null; // base64 or ImageBitmap after background removal + coat
-    let currentBackgroundColor = "#FFFFFF";
-    let currentCoatApplied = false;
-    let currentBgRemoved = false;
+    <script>
+        // Google Sign-In initialization
+        let currentUser = null;
+        let reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+        let posts = JSON.parse(localStorage.getItem('posts') || '[]');
 
-    const canvas = document.getElementById('resultCanvas');
-    const ctx = canvas.getContext('2d');
-    const statusDiv = document.getElementById('statusMsg');
-    const photoInput = document.getElementById('photoInput');
-    const uploadTrigger = document.getElementById('uploadTrigger');
-    const bgColorSelect = document.getElementById('bgColorSelect');
-    const removeBgBtn = document.getElementById('removeBgBtn');
-    const addCoatBtn = document.getElementById('addCoatBtn');
-    const makePassportBtn = document.getElementById('makePassportBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-
-    // Coat & Tie image (vector-style PNG base64 with transparency – modern dark suit + red tie)
-    // We create a canvas-based smart coat overlay that looks like a blazer + tie. Since external image unreliable, we generate procedural coat & tie shape.
-    // For better effect: we use a realistic "coat & tie" overlay PNG (inline base64) – a drawn asset.
-    // I'll embed a clean high-res PNG dataURL for a formal coat & tie (suit jacket + tie). To avoid external network, I generate via canvas drawing function.
-    // But that may look cartoonish. Better: use a pre-rendered stylish coat graphic encoded. Let's create an elegant coat overlay programmatically, but reusable.
-    // Actually, I'll build a function that draws a coat + tie on a separate canvas then blends using 'multiply' or 'source-over'.
-    // For production realism: I'll use a vector-like coat shape with lapels and a tie.
-    function drawCoatAndTie(ctxOverlay, width, height, personRegionHint = null) {
-        // smart positioning: coat placed on lower neck/shoulders. width reference: typically from 0.2w to 0.8w width.
-        const coatWidth = width * 0.62;
-        const coatX = (width - coatWidth) / 2;
-        const coatTopY = height * 0.45;  // shoulder start
-        const coatHeight = height * 0.38;
-        
-        // Draw blazer (dark navy)
-        ctxOverlay.save();
-        // Jacket body
-        ctxOverlay.shadowBlur = 0;
-        ctxOverlay.beginPath();
-        ctxOverlay.roundRect(coatX, coatTopY, coatWidth, coatHeight, 18);
-        ctxOverlay.fillStyle = "#1E2A3E";
-        ctxOverlay.fill();
-        // Lapels
-        ctxOverlay.beginPath();
-        ctxOverlay.moveTo(coatX + coatWidth*0.2, coatTopY+12);
-        ctxOverlay.lineTo(coatX + coatWidth*0.45, coatTopY+32);
-        ctxOverlay.lineTo(coatX + coatWidth*0.3, coatTopY+48);
-        ctxOverlay.fillStyle = "#2C3E50";
-        ctxOverlay.fill();
-        ctxOverlay.beginPath();
-        ctxOverlay.moveTo(coatX + coatWidth*0.8, coatTopY+12);
-        ctxOverlay.lineTo(coatX + coatWidth*0.55, coatTopY+32);
-        ctxOverlay.lineTo(coatX + coatWidth*0.7, coatTopY+48);
-        ctxOverlay.fill();
-        // Buttons
-        ctxOverlay.beginPath();
-        ctxOverlay.arc(coatX + coatWidth*0.5, coatTopY+coatHeight*0.35, 6, 0, 2*Math.PI);
-        ctxOverlay.fillStyle = "#D4AF37";
-        ctxOverlay.fill();
-        ctxOverlay.beginPath();
-        ctxOverlay.arc(coatX + coatWidth*0.5, coatTopY+coatHeight*0.55, 5, 0, 2*Math.PI);
-        ctxOverlay.fill();
-        // Tie (red)
-        ctxOverlay.beginPath();
-        ctxOverlay.moveTo(coatX + coatWidth*0.5, coatTopY+38);
-        ctxOverlay.lineTo(coatX + coatWidth*0.5-12, coatTopY+78);
-        ctxOverlay.lineTo(coatX + coatWidth*0.5, coatTopY+102);
-        ctxOverlay.lineTo(coatX + coatWidth*0.5+12, coatTopY+78);
-        ctxOverlay.fillStyle = "#C23B22";
-        ctxOverlay.fill();
-        // Tie knot
-        ctxOverlay.beginPath();
-        ctxOverlay.ellipse(coatX + coatWidth*0.5, coatTopY+48, 9, 12, 0, 0, 2*Math.PI);
-        ctxOverlay.fillStyle = "#A52A1A";
-        ctxOverlay.fill();
-        ctxOverlay.restore();
-    }
-
-    // Helper: roundRect
-    if (!CanvasRenderingContext2D.prototype.roundRect) {
-        CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-            if (w < 2 * r) r = w / 2;
-            if (h < 2 * r) r = h / 2;
-            this.moveTo(x+r, y);
-            this.lineTo(x+w-r, y);
-            this.quadraticCurveTo(x+w, y, x+w, y+r);
-            this.lineTo(x+w, y+h-r);
-            this.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-            this.lineTo(x+r, y+h);
-            this.quadraticCurveTo(x, y+h, x, y+h-r);
-            this.lineTo(x, y+r);
-            this.quadraticCurveTo(x, y, x+r, y);
-            return this;
-        };
-    }
-
-    // Update canvas display based on currentProcessedImage, background color, and optional passport crop mode
-    let passportModeActive = false;  // if true, enforce exact 2x2 inch ratio (2:3? Actually 2x2 inch square)
-    let passportCanvasWidth = 600;    // 2x2 inch @ 300dpi = 600x600px. We'll output square.
-    let passportSquare = false;
-
-    async function refreshPreview() {
-        if (!currentProcessedImage) {
-            // draw placeholder
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#eef2f7";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#5e7e9e";
-            ctx.font = "14px sans-serif";
-            ctx.fillText("Upload an image to start", canvas.width/2-100, canvas.height/2);
-            return;
+        function handleGoogleLogin() {
+            // Simulated Google login for demo
+            const email = prompt("Enter your Google email for demo:");
+            if (email && email.includes('@gmail.com')) {
+                currentUser = {
+                    email: email,
+                    name: email.split('@')[0],
+                    avatar: email.charAt(0).toUpperCase()
+                };
+                updateUIForUser();
+                showTab('reservations');
+            } else {
+                alert("Please enter a valid Gmail address");
+            }
         }
-        
-        let img = currentProcessedImage;
-        let imgWidth = img.width;
-        let imgHeight = img.height;
-        let targetW, targetH;
-        
-        if (passportModeActive) {
-            // Passport 2x2 inch square (600x600 final, but we keep aspect fill with white background)
-            targetW = 600;
-            targetH = 600;
-            canvas.width = targetW;
-            canvas.height = targetH;
-            ctx.clearRect(0, 0, targetW, targetH);
-            // fill background color
-            ctx.fillStyle = currentBackgroundColor;
-            ctx.fillRect(0, 0, targetW, targetH);
-            // compute scaled image to fit inside square (cover style, face region)
-            let scale = Math.max(targetW / imgWidth, targetH / imgHeight);
-            let drawW = imgWidth * scale;
-            let drawH = imgHeight * scale;
-            let dx = (targetW - drawW) / 2;
-            let dy = (targetH - drawH) / 2;
-            ctx.drawImage(img, dx, dy, drawW, drawH);
-            document.getElementById('dimensionBadge').innerHTML = "📏 Passport size: 2x2 inch (600x600 px) • Perfect for print";
-        } else {
-            // standard preview (keep ratio, max width 500px)
-            let maxPreviewWidth = 500;
-            let ratio = imgHeight / imgWidth;
-            targetW = Math.min(imgWidth, maxPreviewWidth);
-            targetH = targetW * ratio;
-            canvas.width = targetW;
-            canvas.height = targetH;
-            ctx.fillStyle = currentBackgroundColor;
-            ctx.fillRect(0, 0, targetW, targetH);
-            ctx.drawImage(img, 0, 0, targetW, targetH);
-            document.getElementById('dimensionBadge').innerHTML = `📏 Preview mode • ${Math.round(imgWidth)}x${Math.round(imgHeight)} px`;
+
+        function handleLogout() {
+            currentUser = null;
+            updateUIForUser();
+            showTab('reservations');
         }
-        
-        // If coat overlay is not yet merged into processed image but we need to show? Actually "Add Coat" button merges coat into currentProcessedImage. So after coat, it's permanent.
-        // But we also need to reflect coat in preview automatically when pressed. Good.
-    }
-    
-    // Apply background removal using BodyPix (client-side)
-    async function removeBackgroundFromImage(imageElement) {
-        statusDiv.innerText = "🧠 AI is removing background (BodyPix)... please wait";
-        try {
-            await tf.ready();
-            const net = await bodyPix.load({
-                architecture: 'MobileNetV1',
-                outputStride: 16,
-                multiplier: 0.75,
-                quantBytes: 2
-            });
-            const segmentation = await net.segmentPerson(imageElement, {
-                flipHorizontal: false,
-                internalResolution: 'medium',
-                segmentationThreshold: 0.6
-            });
-            // create canvas with original size
-            const offCanvas = document.createElement('canvas');
-            offCanvas.width = imageElement.width;
-            offCanvas.height = imageElement.height;
-            const offCtx = offCanvas.getContext('2d');
-            offCtx.drawImage(imageElement, 0, 0);
-            const imageData = offCtx.getImageData(0, 0, offCanvas.width, offCanvas.height);
-            const data = imageData.data;
-            const mask = segmentation.data;
-            for (let i = 0; i < mask.length; i++) {
-                if (mask[i] === 0) { // background
-                    data[i*4 + 3] = 0; // set alpha to 0
+
+        function updateUIForUser() {
+            if (currentUser) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('userProfile').style.display = 'flex';
+                document.getElementById('userName').innerText = currentUser.name;
+                document.getElementById('userAvatar').innerText = currentUser.avatar;
+                document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = false);
+            } else {
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('userProfile').style.display = 'none';
+                document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = true);
+                alert("Please sign in with Google to make reservations");
+            }
+        }
+
+        function showTab(tabName) {
+            document.getElementById('reservationsTab').style.display = tabName === 'reservations' ? 'block' : 'none';
+            document.getElementById('discussionTab').style.display = tabName === 'discussion' ? 'block' : 'none';
+            document.getElementById('myReservationsTab').style.display = tabName === 'myReservations' ? 'block' : 'none';
+            
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tabName === 'myReservations') {
+                displayMyReservations();
+            } else if (tabName === 'discussion') {
+                displayPosts();
+            } else {
+                displayReservations();
+            }
+        }
+
+        function togglePolymeraseFields() {
+            const type = document.getElementById('polymeraseType').value;
+            document.getElementById('kodOneFields').style.display = type === 'KOD ONE' ? 'block' : 'none';
+            document.getElementById('kodFxNeoFields').style.display = type === 'KOD FX NEO' ? 'block' : 'none';
+        }
+
+        // DNA Extraction Reservation
+        document.getElementById('dnaExtractionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                alert("Please sign in first");
+                return;
+            }
+            
+            const reservation = {
+                id: Date.now(),
+                user: currentUser.email,
+                room: 'DNA Extraction & Pre-PCR',
+                type: 'dna_extraction',
+                dateTime: document.getElementById('dnaDateTime').value,
+                samples: document.getElementById('sampleCount').value,
+                chilex: document.getElementById('chilex').value,
+                proteinaseK: document.getElementById('proteinaseK').value,
+                teBuffer: document.getElementById('teBuffer').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            reservations.push(reservation);
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            alert("Reservation successful!");
+            e.target.reset();
+            displayReservations();
+        });
+
+        // PCR Reservation
+        document.getElementById('pcrForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                alert("Please sign in first");
+                return;
+            }
+            
+            const polymeraseType = document.getElementById('polymeraseType').value;
+            const reservation = {
+                id: Date.now(),
+                user: currentUser.email,
+                room: 'PCR Room',
+                type: 'pcr',
+                dateTime: document.getElementById('pcrDateTime').value,
+                thermalCycler: document.getElementById('thermalCycler').value,
+                polymeraseType: polymeraseType,
+                primer: document.getElementById('primer').value,
+                ddh2o: document.getElementById('ddh2o').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (polymeraseType === 'KOD ONE') {
+                reservation.kodOneMix = document.getElementById('kodOneMix').value;
+            } else {
+                reservation.kodFx = document.getElementById('kodFx').value;
+                reservation.dntp = document.getElementById('dntp').value;
+                reservation.buffer2x = document.getElementById('buffer2x').value;
+            }
+            
+            reservations.push(reservation);
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            alert("Reservation successful!");
+            e.target.reset();
+            displayReservations();
+        });
+
+        // Gel Electrophoresis Reservation
+        document.getElementById('gelForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                alert("Please sign in first");
+                return;
+            }
+            
+            const reservation = {
+                id: Date.now(),
+                user: currentUser.email,
+                room: 'Gel Electrophoresis & Sequencing Prep',
+                type: 'gel',
+                dateTime: document.getElementById('gelDateTime').value,
+                purpose: document.getElementById('gelPurpose').value,
+                notes: document.getElementById('gelNotes').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            reservations.push(reservation);
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            alert("Reservation successful!");
+            e.target.reset();
+            displayReservations();
+        });
+
+        function displayReservations() {
+            const container = document.getElementById('reservationsList');
+            const today = new Date().toDateString();
+            const todayReservations = reservations.filter(r => new Date(r.dateTime).toDateString() === today);
+            
+            if (todayReservations.length === 0) {
+                container.innerHTML = '<p>No reservations for today.</p>';
+                return;
+            }
+            
+            container.innerHTML = todayReservations.map(res => `
+                <div class="reservation-item">
+                    <strong>${res.room}</strong><br>
+                    Time: ${new Date(res.dateTime).toLocaleString()}<br>
+                    User: ${res.user}<br>
+                    ${res.type === 'dna_extraction' ? `Samples: ${res.samples} | Chilex: ${res.chilex}μL | Proteinase K: ${res.proteinaseK}μL | TE: ${res.teBuffer}μL` : ''}
+                    ${res.type === 'pcr' ? `Cycler: ${res.thermalCycler} | Polymerase: ${res.polymeraseType} | Primer: ${res.primer}` : ''}
+                    ${res.type === 'gel' ? `Purpose: ${res.purpose}` : ''}
+                </div>
+            `).join('');
+        }
+
+        function displayMyReservations() {
+            const container = document.getElementById('myReservationsList');
+            const myReservations = reservations.filter(r => r.user === currentUser?.email);
+            
+            if (myReservations.length === 0) {
+                container.innerHTML = '<p>You have no reservations yet.</p>';
+                return;
+            }
+            
+            container.innerHTML = myReservations.map(res => `
+                <div class="reservation-item">
+                    <strong>${res.room}</strong><br>
+                    Date: ${new Date(res.dateTime).toLocaleString()}<br>
+                    Status: Active<br>
+                    <button onclick="cancelReservation(${res.id})">Cancel</button>
+                </div>
+            `).join('');
+        }
+
+        function cancelReservation(id) {
+            if (confirm("Are you sure you want to cancel this reservation?")) {
+                reservations = reservations.filter(r => r.id !== id);
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+                displayMyReservations();
+                displayReservations();
+            }
+        }
+
+        function createPost() {
+            if (!currentUser) {
+                alert("Please sign in to post");
+                return;
+            }
+            
+            const content = document.getElementById('postContent').value;
+            const imageFile = document.getElementById('postImage').files[0];
+            
+            if (!content && !imageFile) {
+                alert("Please enter some content or upload an image");
+                return;
+            }
+            
+            const post = {
+                id: Date.now(),
+                user: currentUser.email,
+                userName: currentUser.name,
+                content: content,
+                timestamp: new Date().toISOString(),
+                comments: []
+            };
+            
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    post.image = e.target.result;
+                    posts.unshift(post);
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    displayPosts();
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                posts.unshift(post);
+                localStorage.setItem('posts', JSON.stringify(posts));
+                displayPosts();
+            }
+            
+            document.getElementById('postContent').value = '';
+            document.getElementById('postImage').value = '';
+        }
+
+        function displayPosts() {
+            const container = document.getElementById('postsList');
+            if (posts.length === 0) {
+                container.innerHTML = '<p>No posts yet. Be the first to share!</p>';
+                return;
+            }
+            
+            container.innerHTML = posts.map(post => `
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">${post.userName || post.user}</div>
+                        <div class="post-time">${new Date(post.timestamp).toLocaleString()}</div>
+                    </div>
+                    <div class="post-content">${post.content || ''}</div>
+                    ${post.image ? `<img src="${post.image}" class="post-image" alt="Uploaded result">` : ''}
+                    <div style="margin-top: 10px;">
+                        <button onclick="addComment(${post.id})">Comment</button>
+                    </div>
+                    <div id="comments-${post.id}" style="margin-top: 10px; padding-left: 20px;">
+                        ${post.comments.map(c => `
+                            <div style="margin-top: 5px; font-size: 12px;">
+                                <strong>${c.user}:</strong> ${c.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addComment(postId) {
+            if (!currentUser) {
+                alert("Please sign in to comment");
+                return;
+            }
+            
+            const comment = prompt("Enter your comment:");
+            if (comment) {
+                const post = posts.find(p => p.id === postId);
+                if (post) {
+                    post.comments.push({
+                        user: currentUser.name,
+                        text: comment,
+                        timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    displayPosts();
                 }
             }
-            offCtx.putImageData(imageData, 0, 0);
-            // create new image from canvas
-            const newImg = new Image();
-            const dataURL = offCanvas.toDataURL('image/png');
-            await new Promise((resolve) => {
-                newImg.onload = resolve;
-                newImg.src = dataURL;
-            });
-            statusDiv.innerText = "✅ Background removed! Now you can add coat/tie and change background.";
-            currentBgRemoved = true;
-            return newImg;
-        } catch(err) {
-            console.error(err);
-            statusDiv.innerText = "⚠️ Background removal failed. Using fallback (ensure webcam/internet). Retry?";
-            return imageElement; // fallback original
         }
-    }
-    
-    // Add coat & tie overlay to currently processed image (which has transparency if bg removed)
-    async function addCoatOverlayToImage(baseImage) {
-        statusDiv.innerText = "👔 Adding formal coat & tie overlay...";
-        return new Promise((resolve) => {
-            const offCanvas = document.createElement('canvas');
-            offCanvas.width = baseImage.width;
-            offCanvas.height = baseImage.height;
-            const offCtx = offCanvas.getContext('2d');
-            offCtx.drawImage(baseImage, 0, 0);
-            // draw coat & tie using drawing routine
-            drawCoatAndTie(offCtx, baseImage.width, baseImage.height);
-            const finalImg = new Image();
-            finalImg.onload = () => {
-                statusDiv.innerText = "✔️ Coat & tie added. Looks formal!";
-                currentCoatApplied = true;
-                resolve(finalImg);
-            };
-            finalImg.src = offCanvas.toDataURL('image/png');
-        });
-    }
-    
-    // Helper to reload processed pipeline: based on original, apply bg removal + coat if flags set.
-    async function rebuildProcessedImage() {
-        if (!originalImage) {
-            statusDiv.innerText = "Please upload a photo first.";
-            return;
-        }
-        let workingImg = originalImage;
-        if (currentBgRemoved) {
-            workingImg = await removeBackgroundFromImage(workingImg);
-        }
-        if (currentCoatApplied && currentBgRemoved) {
-            workingImg = await addCoatOverlayToImage(workingImg);
-        } else if (currentCoatApplied && !currentBgRemoved) {
-            // coat without bg removal? but we suggest bg removal first
-            workingImg = await addCoatOverlayToImage(workingImg);
-        }
-        currentProcessedImage = workingImg;
-        await refreshPreview();
-    }
-    
-    // events
-    uploadTrigger.addEventListener('click', () => photoInput.click());
-    photoInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            const img = new Image();
-            img.onload = async () => {
-                originalImage = img;
-                currentProcessedImage = img;
-                currentBgRemoved = false;
-                currentCoatApplied = false;
-                passportModeActive = false;
-                await refreshPreview();
-                statusDiv.innerText = "📸 Image loaded. Now click 'Remove Background' for best result.";
-            };
-            img.src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
-    
-    removeBgBtn.addEventListener('click', async () => {
-        if (!originalImage) {
-            statusDiv.innerText = "No image uploaded!";
-            return;
-        }
-        currentBgRemoved = true;
-        // remove bg from original or current? rebuild from original + keep coat flag? if coat applied before bg removal, better reset coat?
-        if (currentCoatApplied) {
-            // If coat already there but no bg, we should reset coat flag then reapply after bg removal? better to prompt.
-            currentCoatApplied = false;
-            statusDiv.innerText = "Reset coat flag, removing background first, you can add coat again.";
-        }
-        await rebuildProcessedImage();
-    });
-    
-    addCoatBtn.addEventListener('click', async () => {
-        if (!originalImage) {
-            statusDiv.innerText = "Upload image first";
-            return;
-        }
-        if (!currentBgRemoved) {
-            statusDiv.innerText = "⚠️ For best coat & tie realism, please remove background first! (Click 'Remove Background')";
-            // still allow but quality may suffer
-        }
-        currentCoatApplied = true;
-        await rebuildProcessedImage();
-    });
-    
-    bgColorSelect.addEventListener('change', (e) => {
-        currentBackgroundColor = e.target.value;
-        refreshPreview();
-    });
-    
-    makePassportBtn.addEventListener('click', async () => {
-        if (!currentProcessedImage && !originalImage) {
-            statusDiv.innerText = "No image to convert.";
-            return;
-        }
-        if (!currentProcessedImage && originalImage) {
-            currentProcessedImage = originalImage;
-        }
-        passportModeActive = true;
-        // ensure that we have proper processed image (if bg removed? but we just set)
-        await refreshPreview();
-        statusDiv.innerText = "✅ Passport size (2x2 inch) applied. Background color can be changed. Download to print.";
-    });
-    
-    downloadBtn.addEventListener('click', async () => {
-        if (!canvas || !currentProcessedImage && !originalImage) {
-            statusDiv.innerText = "Nothing to download.";
-            return;
-        }
-        // if passport mode not active, we still download current canvas view but ensure high-res?
-        // For high-res print: we generate a fresh 600x600 canvas with final output.
-        let finalCanvas = document.createElement('canvas');
-        let finalCtx = finalCanvas.getContext('2d');
-        let sourceImg = currentProcessedImage;
-        if (!sourceImg && originalImage) sourceImg = originalImage;
-        if (!sourceImg) return;
+
+        // Initial display
+        displayReservations();
         
-        const outSize = 600; // 2 inch * 300dpi
-        finalCanvas.width = outSize;
-        finalCanvas.height = outSize;
-        finalCtx.fillStyle = currentBackgroundColor;
-        finalCtx.fillRect(0, 0, outSize, outSize);
-        let imgW = sourceImg.width, imgH = sourceImg.height;
-        let scale = Math.max(outSize / imgW, outSize / imgH);
-        let drawW = imgW * scale;
-        let drawH = imgH * scale;
-        let dx = (outSize - drawW) / 2;
-        let dy = (outSize - drawH) / 2;
-        finalCtx.drawImage(sourceImg, dx, dy, drawW, drawH);
-        
-        // optional: if coat missing but we need ensure? but coat already merged if user added
-        const link = document.createElement('a');
-        link.download = 'passport_photo_2x2.png';
-        link.href = finalCanvas.toDataURL('image/png');
-        link.click();
-        statusDiv.innerText = "📥 High-res 2x2 inch (600x600) passport photo downloaded! Ready for printing.";
-    });
-    
-    // init
-    refreshPreview();
-</script>
+        // Disable forms until login
+        document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = true);
+    </script>
 </body>
 </html>
