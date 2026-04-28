@@ -581,6 +581,9 @@
 
     <script>
         // ==================== CONFIGURATION ====================
+        // YOUR GOOGLE SHEET ID - Updated to your new sheet
+        const GOOGLE_SHEET_ID = '1YJhprZq8s-34r0QdMvjYedbnH0xoeG0OoRwRtEzPbe8';
+        
         // IMPORTANT: After deploying Google Apps Script, replace this URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
         
@@ -684,15 +687,10 @@
 
         // ==================== HELPER FUNCTIONS ====================
         function quickSelectTime(time) {
-            const activeForm = document.querySelector('.room-card form');
-            if (activeForm) {
-                const timeInput = activeForm.querySelector('input[type="time"]');
-                if (timeInput) timeInput.value = time;
-            }
-            // Also set for all forms
             document.getElementById('dnaStartTime').value = time;
             document.getElementById('pcrStartTime').value = time;
             document.getElementById('gelStartTime').value = time;
+            showSyncStatus(`Time set to ${time}`, 'success');
         }
 
         function isNightTime(startTime, endTime) {
@@ -1223,8 +1221,9 @@
         document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = !currentUser);
         
         console.log('✅ System ready!');
-        console.log('⚠️ IMPORTANT: Update SCRIPT_URL with your Google Apps Script URL');
-        console.log('📊 Your Google Sheet ID: 1yfGdHupYs17o59m-Tmexlu_PDH8OFNsQQnkfCnSDy8s');
+        console.log('📊 Your Google Sheet ID: 1YJhprZq8s-34r0QdMvjYedbnH0xoeG0OoRwRtEzPbe8');
+        console.log('🔗 Sheet URL: https://docs.google.com/spreadsheets/d/1YJhprZq8s-34r0QdMvjYedbnH0xoeG0OoRwRtEzPbe8/edit');
+        console.log('⚠️ IMPORTANT: Update SCRIPT_URL with your Google Apps Script URL after deployment');
     </script>
 </body>
 </html>
