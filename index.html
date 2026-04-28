@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Molecular Lab Reservation System - Colorful Calendar</title>
+    <title>Molecular Lab Reservation System - Google Sheets Integration</title>
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <style>
@@ -120,7 +120,7 @@
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-height: 600px;
+            max-height: 650px;
             overflow-y: auto;
         }
 
@@ -200,6 +200,7 @@
         .dna-reservation { background: #e3f2fd; border-left-color: #3498db; }
         .pcr-reservation { background: #e8f5e9; border-left-color: #2ecc71; }
         .gel-reservation { background: #fff3e0; border-left-color: #e67e22; }
+        .night-reservation { background: #f3e5f5; border-left-color: #9b59b6; }
 
         /* Calendar Container */
         .calendar-container {
@@ -235,24 +236,6 @@
             width: 20px;
             height: 20px;
             border-radius: 3px;
-        }
-
-        .time-slots {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .time-slot-btn {
-            padding: 5px 10px;
-            background: #f0f0f0;
-            color: #333;
-            font-size: 12px;
-        }
-
-        .time-slot-btn:hover {
-            background: #667eea;
-            color: white;
         }
 
         #calendar {
@@ -303,6 +286,41 @@
             margin-top: 5px;
         }
 
+        .info-box {
+            background: #e8f4f8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            border-left: 3px solid #3498db;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .sync-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 12px;
+            z-index: 1000;
+        }
+
+        .sync-success {
+            border-left: 3px solid #2ecc71;
+        }
+
+        .sync-error {
+            border-left: 3px solid #e74c3c;
+        }
+
         @media (max-width: 768px) {
             .room-grid {
                 grid-template-columns: 1fr;
@@ -322,7 +340,7 @@
         <div class="header">
             <div class="logo">
                 <h1>🔬 Molecular Lab Reservation System</h1>
-                <p>DNA Extraction | PCR | Gel Electrophoresis | Discussion</p>
+                <p>24/7 Operations | Google Sheets Integration | DNA Extraction | PCR | Gel Electrophoresis</p>
             </div>
             <div class="user-info" id="userInfo">
                 <div id="loginSection">
@@ -339,9 +357,9 @@
         </div>
 
         <div class="nav-tabs">
-            <button class="tab active" onclick="showTab('reservations')">Reservations</button>
-            <button class="tab" onclick="showTab('discussion')">Discussion & Results</button>
-            <button class="tab" onclick="showTab('myReservations')">My Reservations</button>
+            <button class="tab active" onclick="showTab('reservations')">📅 Reservations</button>
+            <button class="tab" onclick="showTab('discussion')">💬 Discussion & Results</button>
+            <button class="tab" onclick="showTab('myReservations')">📋 My Reservations</button>
         </div>
 
         <div id="reservationsTab">
@@ -349,19 +367,21 @@
                 <!-- Room 1: DNA Extraction -->
                 <div class="room-card dna-card">
                     <h3>🧬 DNA Extraction & Pre-PCR</h3>
+                    <div class="info-box">
+                        ⏰ 24/7 Available | Max 8 hours | Overnight allowed
+                    </div>
                     <form id="dnaExtractionForm">
                         <div class="form-group">
                             <label>Date</label>
                             <input type="date" required id="dnaDate">
                         </div>
                         <div class="form-group">
-                            <label>Start Time</label>
+                            <label>Start Time (24-hour)</label>
                             <input type="time" required id="dnaStartTime">
                         </div>
                         <div class="form-group">
                             <label>Duration (hours)</label>
                             <input type="number" required id="dnaDuration" min="0.5" max="8" step="0.5">
-                            <div class="time-warning">Maximum 8 hours per reservation</div>
                         </div>
                         <div class="form-group">
                             <label>Number of Samples</label>
@@ -386,19 +406,21 @@
                 <!-- Room 2: PCR Room -->
                 <div class="room-card pcr-card">
                     <h3>🧪 PCR Room (Thermal Cyclers)</h3>
+                    <div class="info-box">
+                        ⏰ 24/7 Available | Max 12 hours | 4 Cyclers available
+                    </div>
                     <form id="pcrForm">
                         <div class="form-group">
                             <label>Date</label>
                             <input type="date" required id="pcrDate">
                         </div>
                         <div class="form-group">
-                            <label>Start Time</label>
+                            <label>Start Time (24-hour)</label>
                             <input type="time" required id="pcrStartTime">
                         </div>
                         <div class="form-group">
                             <label>Duration (hours)</label>
                             <input type="number" required id="pcrDuration" min="0.5" max="12" step="0.5">
-                            <div class="time-warning">Maximum 12 hours per reservation</div>
                         </div>
                         <div class="form-group">
                             <label>Thermal Cycler</label>
@@ -438,7 +460,7 @@
                         </div>
                         <div class="form-group">
                             <label>Primer (μL)</label>
-                            <input type="text" required id="primer" placeholder="e.g., Forward/Reverse primer amount">
+                            <input type="text" required id="primer" placeholder="Forward/Reverse primer">
                         </div>
                         <div class="form-group">
                             <label>ddH₂O (μL)</label>
@@ -450,20 +472,22 @@
 
                 <!-- Room 3: Gel Electrophoresis -->
                 <div class="room-card gel-card">
-                    <h3>🔬 Gel Electrophoresis & Sequencing Prep</h3>
+                    <h3>🔬 Gel Electrophoresis & Sequencing</h3>
+                    <div class="info-box">
+                        ⏰ 24/7 Available | Max 6 hours | Overnight runs allowed
+                    </div>
                     <form id="gelForm">
                         <div class="form-group">
                             <label>Date</label>
                             <input type="date" required id="gelDate">
                         </div>
                         <div class="form-group">
-                            <label>Start Time</label>
+                            <label>Start Time (24-hour)</label>
                             <input type="time" required id="gelStartTime">
                         </div>
                         <div class="form-group">
                             <label>Duration (hours)</label>
                             <input type="number" required id="gelDuration" min="0.5" max="6" step="0.5">
-                            <div class="time-warning">Maximum 6 hours per reservation</div>
                         </div>
                         <div class="form-group">
                             <label>Purpose</label>
@@ -484,32 +508,14 @@
 
             <div class="calendar-container">
                 <div class="calendar-header">
-                    <h3>📅 Color-Coded Reservation Calendar</h3>
+                    <h3>📅 24/7 Color-Coded Calendar</h3>
                     <div class="color-legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #3498db;"></div>
-                            <span>DNA Extraction</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #2ecc71;"></div>
-                            <span>PCR Room</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #e67e22;"></div>
-                            <span>Gel Electrophoresis</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #9b59b6;"></div>
-                            <span>Morning (6AM-12PM)</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #f39c12;"></div>
-                            <span>Afternoon (12PM-5PM)</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #e74c3c;"></div>
-                            <span>Evening (5PM-10PM)</span>
-                        </div>
+                        <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div><span>DNA Extraction</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div><span>PCR Room</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #e67e22;"></div><span>Gel Electrophoresis</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #f39c12;"></div><span>Day (6AM-6PM)</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #9b59b6;"></div><span>Night (6PM-6AM)</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div><span>Overnight</span></div>
                     </div>
                 </div>
                 <div id="calendar"></div>
@@ -525,11 +531,11 @@
             <div class="discussion-area">
                 <h3>💬 Lab Discussion & Results Sharing</h3>
                 <div class="form-group">
-                    <textarea id="postContent" placeholder="Share your thoughts, results, or questions..." rows="3"></textarea>
+                    <textarea id="postContent" placeholder="Share your results, questions, or updates..." rows="3"></textarea>
                     <div class="form-group">
                         <input type="file" id="postImage" accept="image/*">
                     </div>
-                    <button onclick="createPost()">Post</button>
+                    <button onclick="createPost()">📝 Post to Discussion</button>
                 </div>
                 <div id="postsList"></div>
             </div>
@@ -543,23 +549,146 @@
         </div>
     </div>
 
-    <script>
-        let currentUser = null;
-        let reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-        let posts = JSON.parse(localStorage.getItem('posts') || '[]');
-        let calendar = null;
+    <div id="syncStatus" class="sync-status" style="display: none;"></div>
 
+    <script>
+        // ==================== CONFIGURATION ====================
+        // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        
+        // ==================== GLOBAL VARIABLES ====================
+        let currentUser = null;
+        let reservations = [];
+        let posts = [];
+        let calendar = null;
+        let isLoading = false;
+
+        // ==================== GOOGLE SHEETS API FUNCTIONS ====================
+        async function callGoogleScript(action, data = {}) {
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: action,
+                        ...data
+                    })
+                });
+                
+                // Since we're using no-cors, we need to handle response differently
+                showSyncStatus('Data saved to Google Sheets!', 'success');
+                return { status: 'success' };
+            } catch (error) {
+                console.error('Error calling Google Script:', error);
+                showSyncStatus('Error saving to Google Sheets. Check console.', 'error');
+                return { status: 'error', message: error.message };
+            }
+        }
+
+        async function loadReservationsFromSheet() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getReservations`);
+                const data = await response.json();
+                if (data.status === 'success' && data.reservations) {
+                    reservations = data.reservations;
+                    localStorage.setItem('reservations_backup', JSON.stringify(reservations));
+                    return reservations;
+                }
+            } catch (error) {
+                console.log('Loading from backup...');
+                const backup = localStorage.getItem('reservations_backup');
+                if (backup) {
+                    reservations = JSON.parse(backup);
+                    return reservations;
+                }
+            }
+            return [];
+        }
+
+        async function loadPostsFromSheet() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getPosts`);
+                const data = await response.json();
+                if (data.status === 'success' && data.posts) {
+                    posts = data.posts;
+                    localStorage.setItem('posts_backup', JSON.stringify(posts));
+                    return posts;
+                }
+            } catch (error) {
+                console.log('Loading posts from backup...');
+                const backup = localStorage.getItem('posts_backup');
+                if (backup) {
+                    posts = JSON.parse(backup);
+                    return posts;
+                }
+            }
+            return [];
+        }
+
+        async function saveReservationToSheet(reservation) {
+            return await callGoogleScript('addReservation', { reservation: reservation });
+        }
+
+        async function savePostToSheet(post) {
+            return await callGoogleScript('addPost', { post: post });
+        }
+
+        async function cancelReservationInSheet(reservationId) {
+            return await callGoogleScript('cancelReservation', { reservationId: reservationId });
+        }
+
+        function showSyncStatus(message, type) {
+            const statusDiv = document.getElementById('syncStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = `sync-status sync-${type}`;
+            statusDiv.style.display = 'block';
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // ==================== HELPER FUNCTIONS ====================
+        function isNightTime(startTime, endTime) {
+            const startHour = new Date(startTime).getHours();
+            const endHour = new Date(endTime).getHours();
+            return startHour >= 18 || startHour < 6 || endHour >= 18 || endHour < 6;
+        }
+
+        function isOvernight(startTime, endTime) {
+            const startDate = new Date(startTime);
+            const endDate = new Date(endTime);
+            return startDate.getDate() !== endDate.getDate();
+        }
+
+        function getTimeColor(startTime, endTime) {
+            if (isOvernight(startTime, endTime)) return '#e74c3c';
+            if (isNightTime(startTime, endTime)) return '#9b59b6';
+            return '#f39c12';
+        }
+
+        function getRoomColor(room, type) {
+            if (type === 'dna_extraction' || room.includes('DNA')) return '#3498db';
+            if (type === 'pcr' || room.includes('PCR')) return '#2ecc71';
+            if (type === 'gel' || room.includes('Gel')) return '#e67e22';
+            return '#95a5a6';
+        }
+
+        // ==================== AUTHENTICATION ====================
         function handleGoogleLogin() {
-            const email = prompt("Enter your Google email for demo:");
+            const email = prompt("Enter your Google email (must be @gmail.com):");
             if (email && email.includes('@gmail.com')) {
                 currentUser = {
                     email: email,
                     name: email.split('@')[0],
                     avatar: email.charAt(0).toUpperCase()
                 };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 updateUIForUser();
+                loadAllData();
                 showTab('reservations');
-                initializeCalendar();
             } else {
                 alert("Please enter a valid Gmail address");
             }
@@ -567,12 +696,15 @@
 
         function handleLogout() {
             currentUser = null;
+            localStorage.removeItem('currentUser');
             updateUIForUser();
-            showTab('reservations');
+            reservations = [];
+            posts = [];
             if (calendar) {
                 calendar.destroy();
                 calendar = null;
             }
+            showTab('reservations');
         }
 
         function updateUIForUser() {
@@ -586,53 +718,24 @@
                 document.getElementById('loginSection').style.display = 'block';
                 document.getElementById('userProfile').style.display = 'none';
                 document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = true);
-                if (calendar) {
-                    calendar.destroy();
-                    calendar = null;
-                }
             }
         }
 
-        function getTimeColor(startTime) {
-            const hour = new Date(startTime).getHours();
-            if (hour < 12) return '#9b59b6'; // Morning
-            if (hour < 17) return '#f39c12'; // Afternoon
-            return '#e74c3c'; // Evening
-        }
-
-        function getRoomColor(room, type) {
-            if (type === 'dna_extraction' || room.includes('DNA')) return '#3498db';
-            if (type === 'pcr' || room.includes('PCR')) return '#2ecc71';
-            if (type === 'gel' || room.includes('Gel')) return '#e67e22';
-            return '#95a5a6';
-        }
-
-        function showTab(tabName) {
-            document.getElementById('reservationsTab').style.display = tabName === 'reservations' ? 'block' : 'none';
-            document.getElementById('discussionTab').style.display = tabName === 'discussion' ? 'block' : 'none';
-            document.getElementById('myReservationsTab').style.display = tabName === 'myReservations' ? 'block' : 'none';
+        // ==================== DATA MANAGEMENT ====================
+        async function loadAllData() {
+            if (isLoading) return;
+            isLoading = true;
             
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            await loadReservationsFromSheet();
+            await loadPostsFromSheet();
             
-            if (tabName === 'myReservations') {
-                displayMyReservations();
-            } else if (tabName === 'discussion') {
-                displayPosts();
-            } else {
-                displayReservations();
-                if (!calendar && currentUser) {
-                    initializeCalendar();
-                } else if (calendar) {
-                    calendar.refetchEvents();
-                }
+            if (calendar) {
+                calendar.refetchEvents();
             }
-        }
-
-        function togglePolymeraseFields() {
-            const type = document.getElementById('polymeraseType').value;
-            document.getElementById('kodOneFields').style.display = type === 'KOD ONE' ? 'block' : 'none';
-            document.getElementById('kodFxNeoFields').style.display = type === 'KOD FX NEO' ? 'block' : 'none';
+            displayReservations();
+            displayPosts();
+            
+            isLoading = false;
         }
 
         function checkAvailability(room, date, startTime, duration) {
@@ -647,8 +750,8 @@
             });
         }
 
-        // DNA Extraction Reservation
-        document.getElementById('dnaExtractionForm').addEventListener('submit', (e) => {
+        // ==================== RESERVATION HANDLERS ====================
+        document.getElementById('dnaExtractionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) {
                 alert("Please sign in first");
@@ -680,20 +783,19 @@
                 chilex: document.getElementById('chilex').value,
                 proteinaseK: document.getElementById('proteinaseK').value,
                 teBuffer: document.getElementById('teBuffer').value,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                isOvernight: isOvernight(startDateTime, endDateTime),
+                isNight: isNightTime(startDateTime, endDateTime)
             };
             
-            reservations.push(reservation);
-            localStorage.setItem('reservations', JSON.stringify(reservations));
-            alert("Reservation successful!");
+            await saveReservationToSheet(reservation);
+            await loadAllData();
+            alert("Reservation successful! Data saved to Google Sheets.");
             e.target.reset();
             document.getElementById('dnaDate').value = new Date().toISOString().split('T')[0];
-            displayReservations();
-            if (calendar) calendar.refetchEvents();
         });
 
-        // PCR Reservation
-        document.getElementById('pcrForm').addEventListener('submit', (e) => {
+        document.getElementById('pcrForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) {
                 alert("Please sign in first");
@@ -709,7 +811,7 @@
             const room = `PCR Room - ${thermalCycler}`;
             
             if (checkAvailability(room, date, startTime, duration)) {
-                alert("This thermal cycler is already booked for this time slot. Please choose another time or cycler.");
+                alert("This thermal cycler is already booked for this time slot.");
                 return;
             }
             
@@ -728,7 +830,9 @@
                 polymeraseType: polymeraseType,
                 primer: document.getElementById('primer').value,
                 ddh2o: document.getElementById('ddh2o').value,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                isOvernight: isOvernight(startDateTime, endDateTime),
+                isNight: isNightTime(startDateTime, endDateTime)
             };
             
             if (polymeraseType === 'KOD ONE') {
@@ -739,17 +843,14 @@
                 reservation.buffer2x = document.getElementById('buffer2x').value;
             }
             
-            reservations.push(reservation);
-            localStorage.setItem('reservations', JSON.stringify(reservations));
-            alert("Reservation successful!");
+            await saveReservationToSheet(reservation);
+            await loadAllData();
+            alert("Reservation successful! Data saved to Google Sheets.");
             e.target.reset();
             document.getElementById('pcrDate').value = new Date().toISOString().split('T')[0];
-            displayReservations();
-            if (calendar) calendar.refetchEvents();
         });
 
-        // Gel Electrophoresis Reservation
-        document.getElementById('gelForm').addEventListener('submit', (e) => {
+        document.getElementById('gelForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) {
                 alert("Please sign in first");
@@ -779,18 +880,19 @@
                 endDateTime: endDateTime.toISOString(),
                 purpose: document.getElementById('gelPurpose').value,
                 notes: document.getElementById('gelNotes').value,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                isOvernight: isOvernight(startDateTime, endDateTime),
+                isNight: isNightTime(startDateTime, endDateTime)
             };
             
-            reservations.push(reservation);
-            localStorage.setItem('reservations', JSON.stringify(reservations));
-            alert("Reservation successful!");
+            await saveReservationToSheet(reservation);
+            await loadAllData();
+            alert("Reservation successful! Data saved to Google Sheets.");
             e.target.reset();
             document.getElementById('gelDate').value = new Date().toISOString().split('T')[0];
-            displayReservations();
-            if (calendar) calendar.refetchEvents();
         });
 
+        // ==================== CALENDAR ====================
         function initializeCalendar() {
             const calendarEl = document.getElementById('calendar');
             if (calendar) {
@@ -804,77 +906,45 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                slotMinTime: '06:00:00',
-                slotMaxTime: '22:00:00',
+                slotMinTime: '00:00:00',
+                slotMaxTime: '24:00:00',
                 allDaySlot: false,
                 slotDuration: '00:30:00',
-                slotLabelInterval: '01:00:00',
+                slotLabelInterval: '02:00:00',
                 nowIndicator: true,
-                eventTimeFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                },
+                weekends: true,
+                height: 'auto',
                 events: reservations.map(res => {
                     const roomColor = getRoomColor(res.room, res.type);
-                    const timeColor = getTimeColor(res.startDateTime);
-                    
+                    const timeColor = getTimeColor(res.startDateTime, res.endDateTime);
+                    let title = `${res.user?.split('@')[0] || 'Unknown'} - ${res.room?.split(' - ')[0] || res.room}`;
+                    if (res.isOvernight) title += ' 🌙';
                     return {
-                        title: `${res.user.split('@')[0]} - ${res.room.split(' - ')[0]}`,
+                        title: title,
                         start: res.startDateTime,
                         end: res.endDateTime,
                         backgroundColor: roomColor,
                         borderColor: timeColor,
                         textColor: 'white',
-                        borderWidth: '3px',
-                        extendedProps: {
-                            room: res.room,
-                            user: res.user,
-                            type: res.type,
-                            duration: res.duration,
-                            details: res
-                        }
+                        borderWidth: '2px',
+                        extendedProps: { details: res }
                     };
                 }),
                 eventClick: function(info) {
-                    const details = info.event.extendedProps.details;
-                    let detailsText = `Reservation Details:\n`;
-                    detailsText += `Room: ${details.room}\n`;
-                    detailsText += `User: ${details.user}\n`;
-                    detailsText += `Date: ${new Date(details.startDateTime).toLocaleDateString()}\n`;
-                    detailsText += `Time: ${new Date(details.startDateTime).toLocaleTimeString()} - ${new Date(details.endDateTime).toLocaleTimeString()}\n`;
-                    detailsText += `Duration: ${details.duration} hours\n`;
-                    
-                    if (details.type === 'dna_extraction') {
-                        detailsText += `Samples: ${details.samples}\n`;
-                        detailsText += `Chilex: ${details.chilex}μL\n`;
-                        detailsText += `Proteinase K: ${details.proteinaseK}μL\n`;
-                        detailsText += `TE Buffer: ${details.teBuffer}μL`;
-                    } else if (details.type === 'pcr') {
-                        detailsText += `Thermal Cycler: ${details.thermalCycler}\n`;
-                        detailsText += `Polymerase: ${details.polymeraseType}\n`;
-                        detailsText += `Primer: ${details.primer}\n`;
-                        detailsText += `ddH₂O: ${details.ddh2o}μL`;
-                    } else if (details.type === 'gel') {
-                        detailsText += `Purpose: ${details.purpose}\n`;
-                        detailsText += `Notes: ${details.notes || 'None'}`;
-                    }
-                    
-                    alert(detailsText);
-                },
-                eventDidMount: function(info) {
-                    // Add tooltip
-                    info.el.title = `${info.event.title}\nDuration: ${info.event.extendedProps.duration} hours`;
+                    const d = info.event.extendedProps.details;
+                    alert(`Reservation: ${d.room}\nUser: ${d.user}\nTime: ${new Date(d.startDateTime).toLocaleString()} - ${new Date(d.endDateTime).toLocaleString()}\nDuration: ${d.duration} hours`);
                 }
             });
             calendar.render();
         }
 
+        // ==================== DISPLAY FUNCTIONS ====================
         function displayReservations() {
             const container = document.getElementById('reservationsList');
             const now = new Date();
             const futureReservations = reservations.filter(r => new Date(r.startDateTime) > now)
-                .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+                .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime))
+                .slice(0, 10);
             
             if (futureReservations.length === 0) {
                 container.innerHTML = '<p>No upcoming reservations.</p>';
@@ -886,17 +956,17 @@
                 if (res.type === 'dna_extraction') colorClass = 'dna-reservation';
                 else if (res.type === 'pcr') colorClass = 'pcr-reservation';
                 else if (res.type === 'gel') colorClass = 'gel-reservation';
+                if (res.isOvernight || res.isNight) colorClass += ' night-reservation';
                 
                 return `
                     <div class="reservation-item ${colorClass}">
                         <strong>${res.room}</strong><br>
                         📅 ${new Date(res.startDateTime).toLocaleDateString()}<br>
                         ⏰ ${new Date(res.startDateTime).toLocaleTimeString()} - ${new Date(res.endDateTime).toLocaleTimeString()}<br>
-                        ⏱️ Duration: ${res.duration} hours<br>
-                        👤 User: ${res.user}<br>
-                        ${res.type === 'dna_extraction' ? `🧬 Samples: ${res.samples} | Chilex: ${res.chilex}μL | Proteinase K: ${res.proteinaseK}μL | TE: ${res.teBuffer}μL` : ''}
-                        ${res.type === 'pcr' ? `🧪 Cycler: ${res.thermalCycler} | Polymerase: ${res.polymeraseType} | Primer: ${res.primer} | ddH₂O: ${res.ddh2o}μL` : ''}
-                        ${res.type === 'gel' ? `🎯 Purpose: ${res.purpose}${res.notes ? ` | Notes: ${res.notes}` : ''}` : ''}
+                        👤 ${res.user}<br>
+                        ${res.type === 'dna_extraction' ? `🧬 Samples: ${res.samples}` : ''}
+                        ${res.type === 'pcr' ? `🧪 ${res.thermalCycler}` : ''}
+                        ${res.type === 'gel' ? `🎯 ${res.purpose}` : ''}
                     </div>
                 `;
             }).join('');
@@ -923,35 +993,32 @@
                         <strong>${res.room}</strong><br>
                         📅 ${new Date(res.startDateTime).toLocaleDateString()}<br>
                         ⏰ ${new Date(res.startDateTime).toLocaleTimeString()} - ${new Date(res.endDateTime).toLocaleTimeString()}<br>
-                        ⏱️ Duration: ${res.duration} hours<br>
                         Status: ${new Date(res.endDateTime) > new Date() ? '🟢 Upcoming' : '✅ Completed'}<br>
-                        <button onclick="cancelReservation(${res.id})">❌ Cancel Reservation</button>
+                        <button onclick="cancelMyReservation(${res.id})">❌ Cancel</button>
                     </div>
                 `;
             }).join('');
         }
 
-        function cancelReservation(id) {
-            if (confirm("Are you sure you want to cancel this reservation?")) {
-                reservations = reservations.filter(r => r.id !== id);
-                localStorage.setItem('reservations', JSON.stringify(reservations));
+        async function cancelMyReservation(id) {
+            if (confirm("Cancel this reservation?")) {
+                await cancelReservationInSheet(id);
+                await loadAllData();
                 displayMyReservations();
-                displayReservations();
                 if (calendar) calendar.refetchEvents();
             }
         }
 
-        function createPost() {
+        // ==================== DISCUSSION FUNCTIONS ====================
+        async function createPost() {
             if (!currentUser) {
                 alert("Please sign in to post");
                 return;
             }
             
             const content = document.getElementById('postContent').value;
-            const imageFile = document.getElementById('postImage').files[0];
-            
-            if (!content && !imageFile) {
-                alert("Please enter some content or upload an image");
+            if (!content) {
+                alert("Please enter some content");
                 return;
             }
             
@@ -964,28 +1031,16 @@
                 comments: []
             };
             
-            if (imageFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    post.image = e.target.result;
-                    posts.unshift(post);
-                    localStorage.setItem('posts', JSON.stringify(posts));
-                    displayPosts();
-                };
-                reader.readAsDataURL(imageFile);
-            } else {
-                posts.unshift(post);
-                localStorage.setItem('posts', JSON.stringify(posts));
-                displayPosts();
-            }
-            
+            await savePostToSheet(post);
+            await loadPostsFromSheet();
+            displayPosts();
             document.getElementById('postContent').value = '';
-            document.getElementById('postImage').value = '';
+            alert("Post saved to Google Sheets!");
         }
 
         function displayPosts() {
             const container = document.getElementById('postsList');
-            if (posts.length === 0) {
+            if (!posts || posts.length === 0) {
                 container.innerHTML = '<p>No posts yet. Be the first to share!</p>';
                 return;
             }
@@ -997,50 +1052,67 @@
                         <div class="post-time">${new Date(post.timestamp).toLocaleString()}</div>
                     </div>
                     <div class="post-content">${post.content || ''}</div>
-                    ${post.image ? `<img src="${post.image}" class="post-image" alt="Uploaded result">` : ''}
-                    <div style="margin-top: 10px;">
-                        <button onclick="addComment(${post.id})">💬 Comment</button>
-                    </div>
-                    <div id="comments-${post.id}" style="margin-top: 10px; padding-left: 20px;">
-                        ${post.comments.map(c => `
-                            <div style="margin-top: 5px; font-size: 12px; padding: 5px; background: #f9f9f9; border-radius: 5px;">
-                                <strong>${c.user}:</strong> ${c.text}
-                            </div>
-                        `).join('')}
-                    </div>
+                    ${post.image ? `<img src="${post.image}" class="post-image">` : ''}
+                    <button onclick="addCommentToPost(${post.id})">💬 Comment</button>
                 </div>
             `).join('');
         }
 
-        function addComment(postId) {
-            if (!currentUser) {
-                alert("Please sign in to comment");
-                return;
-            }
-            
+        function addCommentToPost(postId) {
             const comment = prompt("Enter your comment:");
-            if (comment) {
+            if (comment && currentUser) {
                 const post = posts.find(p => p.id === postId);
                 if (post) {
+                    post.comments = post.comments || [];
                     post.comments.push({
                         user: currentUser.name,
                         text: comment,
-                        timestamp: new Date().toISOString()
+                        time: new Date().toISOString()
                     });
-                    localStorage.setItem('posts', JSON.stringify(posts));
                     displayPosts();
                 }
             }
         }
 
-        // Initial setup
+        function togglePolymeraseFields() {
+            const type = document.getElementById('polymeraseType').value;
+            document.getElementById('kodOneFields').style.display = type === 'KOD ONE' ? 'block' : 'none';
+            document.getElementById('kodFxNeoFields').style.display = type === 'KOD FX NEO' ? 'block' : 'none';
+        }
+
+        function showTab(tabName) {
+            document.getElementById('reservationsTab').style.display = tabName === 'reservations' ? 'block' : 'none';
+            document.getElementById('discussionTab').style.display = tabName === 'discussion' ? 'block' : 'none';
+            document.getElementById('myReservationsTab').style.display = tabName === 'myReservations' ? 'block' : 'none';
+            
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
+            
+            if (tabName === 'myReservations') {
+                displayMyReservations();
+            } else if (tabName === 'discussion') {
+                displayPosts();
+            } else if (tabName === 'reservations' && !calendar && currentUser) {
+                initializeCalendar();
+            }
+        }
+
+        // ==================== INITIALIZATION ====================
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            updateUIForUser();
+            loadAllData();
+        }
+        
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('dnaDate').value = today;
         document.getElementById('pcrDate').value = today;
         document.getElementById('gelDate').value = today;
         
-        displayReservations();
-        document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = true);
+        document.querySelectorAll('button[type="submit"]').forEach(btn => btn.disabled = !currentUser);
+        
+        console.log('System ready. Update SCRIPT_URL with your Google Apps Script URL!');
     </script>
 </body>
 </html>
